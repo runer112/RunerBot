@@ -1,0 +1,14 @@
+(b_?|rom ?|os )calls				z80?	BCALLs		http://j.mp/83p-bcalls
+(os )?flags					z80?	OS Flags	http://j.mp/83p-flags
+(os )?hooks					z80?	Hooks		http://j.mp/83p-hooks
+ports						z80?	Ports		http://j.mp/83p-ports
+(safe ?|free ?static |fixed |os )?ram( areas)?	z80?	RAM Areas	http://j.mp/83p-ram
+os( info(rmation)?)?				z80?	OS Info		http://j.mp/83p-os
+(hw|hardware)( info(rmation)?)?			z80?	Hardware Info	http://j.mp/83p-hw
+(os )?tokens					z80?	Tokens		http://j.mp/83p-tokens
+(os )?(home ?screen |large |6[x*]8 )?(os )?(char(acter)?s|font)	z80?	Large Font	http://j.mp/83p-lgfont
+(os )?(graph ?screen |small )(os )?(char(acter)?s|font)	z80?	Small Font	http://j.mp/83p-smfont
+(keys|(get)?key( ?(codes|values|table))?)	z80?	GetKey Table	http://j.mp/83p-getkey
+(ti83plus[. ])?inc(lude)?( file)?		z80?	ti83plus.inc	http://j.mp/83p-inc
+((learn )?((ti-)?83 plus |z80 )as(sembly|m) in 28 days|(asm(in)?)?28d(ays)?)	z80?	ASM in 28 Days	http://j.mp/83p-28d
+cs?e ?font					z80?	CE/CSE Font	http://jacobly.com/tifonts/
