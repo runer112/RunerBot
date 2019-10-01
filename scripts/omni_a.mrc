@@ -306,10 +306,28 @@
     halt
   }
   if $gettok(%query,1,32) == port {
-    if $regex(%query,/^port +\$?([0-9A-F]{1,4})h? *$/i) {
+    if $regex(%query,/^port +\$?([0-9A-F]{1,6})h? *$/i) {
       var %ez80 $iif(%class == ez80 || (!%model && $len($regml(1)) > 2),1,0)
       var %port $left($iif(%ez80,0000,00),- $+ $len($regml(1))) $+ $upper($regml(1))
-      var %searchport $iif(%port > 2000,$left(%port,-3) $+ 000,%port)
+      var %searchport %port
+      if %ez80 {
+        var %decport $base(%port,16,10)
+        var %offset
+        if %decport >= $base(E00000,16,10) && %decport < $base(E40000,16,10) {
+          var %offset DF0000
+        }
+        else if %decport >= $base(F00000,16,10) && %decport < $base(FB0000,16,10) {
+          var %offset EB0000
+        }
+        if %offset {
+          var %decport $calc(%decport - $base(%offset,16,10))
+          var %searchport $base(%decport,10,16,5)
+          var %searchport $left(%searchport,1) $+ $right(%searchport,3)
+        }
+        if %searchport > 2000 {
+          var %searchport $left(%searchport,-3) $+ 000
+        }
+      }
       wikiti -gt /<b>Function:<\/b> $+ $chr(160) $+ (.+)/ $iif(%ez80,84PCE,83Plus) $+ :Ports: $+ %searchport omni.z80.port $1-8 %port
       halt
     }
