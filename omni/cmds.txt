@@ -1,14 +1,14 @@
-(b_?|rom ?|os )calls				Z80?	BCALLs		http://j.mp/83p-bcalls
-(os )?flags					Z80?	OS Flags	http://j.mp/83p-flags
-(os )?hooks					Z80?	Hooks		http://j.mp/83p-hooks
-ports						Z80?	Ports		http://j.mp/83p-ports
-(safe ?|free ?static |fixed |os )?ram( areas)?	Z80?	RAM Areas	http://j.mp/83p-ram
-os( info(rmation)?)?				Z80?	OS Info		http://j.mp/83p-os
-(hw|hardware)( info(rmation)?)?			Z80?	Hardware Info	http://j.mp/83p-hw
-(os )?tokens					Z80?	Tokens		http://j.mp/83p-tokens
-(os )?(home ?screen |large |6[x*]8 )?(os )?(char(acter)?s|font)	z80?	Large Font	http://j.mp/83p-lgfont
-(os )?(graph ?screen |small )(os )?(char(acter)?s|font)	z80?	Small Font	http://j.mp/83p-smfont
-(keys|(get)?key( ?(codes|values|table))?)	Z80?	GetKey Table	http://j.mp/83p-getkey
-(ti83plus[. ])?inc(lude)?( file)?		Z80?	ti83plus.inc	http://j.mp/83p-inc
-((learn )?((ti-)?83 plus |z80 )as(sembly|m) in 28 days|(asm(in)?)?28d(ays)?)	z80?	ASM in 28 Days	http://j.mp/83p-28d
-cs?e ?font					eZ80?	CE/CSE Font	http://jacobly.com/tifonts/
+(b_?|rom ?|os )calls				Z80?	BCALLs		https://j.mp/83p-bcalls
+(os )?flags					Z80?	OS Flags	https://j.mp/83p-flags
+(os )?hooks					Z80?	Hooks		https://j.mp/83p-hooks
+ports						Z80?	Ports		https://j.mp/83p-ports
+(safe ?|free ?static |fixed |os )?ram( areas)?	Z80?	RAM Areas	https://j.mp/83p-ram
+os( info(rmation)?)?				Z80?	OS Info		https://j.mp/83p-os
+(hw|hardware)( info(rmation)?)?			Z80?	Hardware Info	https://j.mp/83p-hw
+(os )?tokens					Z80?	Tokens		https://j.mp/83p-tokens
+(os )?(home ?screen |large |6[x*]8 )?(os )?(char(acter)?s|font)	z80?	Large Font	https://j.mp/83p-lgfont
+(os )?(graph ?screen |small )(os )?(char(acter)?s|font)	z80?	Small Font	https://j.mp/83p-smfont
+(keys|(get)?key( ?(codes|values|table))?)	Z80?	GetKey Table	https://j.mp/83p-getkey
+(ti83plus[. ])?inc(lude)?( file)?		Z80?	ti83plus.inc	https://j.mp/83p-inc
+((learn )?((ti-)?83 plus |z80 )as(sembly|m) in 28 days|(asm(in)?)?28d(ays)?)	z80?	ASM in 28 Days	https://j.mp/83p-28d
+cs?e ?font					eZ80?	CE/CSE Font	https://jacobly.com/tifonts/
