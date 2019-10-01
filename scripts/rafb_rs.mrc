@@ -37,7 +37,7 @@ on *:sockread:rafb*: {
     sockread %r
     ;echo -s sockread $sockname %r
     if $regex(%r,/^Location: (.+)$/i) {
-      rafb.return $sockname $regml(1)
+      rafb.return $sockname $replace($regml(1),http:,https:,www.,)
     }
   }
   rafb.return $sockname error
