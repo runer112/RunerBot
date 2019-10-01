@@ -5,6 +5,6 @@ z80/ez80 help.
 
 1. Get mIRC working. I use an ancient version, 7.15, but maybe new versions are
    fully compatible.
-2. Load all scripts/*_a.ini files as "Aliases" scripts, and scripts/*_rs.ini
+2. Load all scripts/*_a.mrc files as "Aliases" scripts, and scripts/*_rs.mrc
    files as "Remote" scripts.
-3. Set the top few alises in scripts/omni_a.ini properly.
+3. Set the top few alises in scripts/omni_a.mrc properly.
