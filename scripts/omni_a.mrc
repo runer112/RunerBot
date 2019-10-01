@@ -247,7 +247,7 @@
           var %do omni.color $1-
         }
         elseif $regex(%msg1,/^port /i) {
-          var %do omni.z80 %nick %chan %omnomirc %target %errortarget $left(%msg,1) $+ z80 %msg1
+          var %do omni.z80 %nick %chan %omnomirc %target %errortarget $left(%msg,1) $+ ? %msg1
         }
         elseif $regex(%msg1,/^(?:set)?default ?(.*)/i) {
           var %do omni.user.set %file Default $regml(1)
@@ -306,9 +306,11 @@
     halt
   }
   if $gettok(%query,1,32) == port {
-    if $regex(%query,/^port \$?([0-9A-F][0-9A-F]?)h?/i) {
-      var %port $upper($iif($len($regml(1)) == 1,0) $+ $regml(1))
-      wikiti -gt /<b>Function:<\/b> $+ $chr(160) $+ (.+)/ 83Plus:Ports: $+ %port omni.z80.port $1-8 %port
+    if $regex(%query,/^port +\$?([0-9A-F]{1,4})h? *$/i) {
+      var %ez80 $iif(%class == ez80 || (!%model && $len($regml(1)) > 2),1,0)
+      var %port $left($iif(%ez80,0000,00),- $+ $len($regml(1))) $+ $upper($regml(1))
+      var %searchport $iif(%port > 2000,$left(%port,-3) $+ 000,%port)
+      wikiti -gt /<b>Function:<\/b> $+ $chr(160) $+ (.+)/ $iif(%ez80,84PCE,83Plus) $+ :Ports: $+ %searchport omni.z80.port $1-8 %port
       halt
     }
     else {
@@ -484,9 +486,9 @@
   var %target $4-5
   var %errortarget $6-7
   var %command $8
-  var %model $omni.z80.getmodel(%command)
-  var %class $iif(%model == 8384pce,eZ80,Z80)
   var %port $9
+  var %model $omni.z80.getmodel(%command)
+  var %class $iif(%model == 8384pce || (!%model && $len(%port) > 2),eZ80,Z80)
   var %function $iif($numtok($1-,32) != 10,$gettok($1-,10- $+ $calc($numtok($1-,32) - 1),32))
   var %page $iif($numtok($1-,32) >= 10,$gettok($1-,$numtok($1-,32),32))
   if %page == $null {
