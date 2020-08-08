@@ -468,10 +468,10 @@
   if $regex($1,/^(z80|8[34][+p](se)?)$/i) {
     return 8384
   }
-  if $regex($1,/^(84[+p]cse)$/i) {
+  if $regex($1,/^(84[+p]cse|cse)$/i) {
     return 84pcse
   }
-  if $regex($1,/^(ez80|8[34][+p]ce)$/i) {
+  if $regex($1,/^(ez80|8[34][+p]ce|ce)$/i) {
     return 8384pce
   }
 }
