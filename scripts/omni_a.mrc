@@ -3280,33 +3280,50 @@
   if %xgx1555 {
     var %outspace $omni.color.space(%outspace,1)
   }
+  var %depthinreal $gettok(%inspace,7,32)
+  var %depthoutreal $gettok(%outspace,7,32)
   var %outcolor
   var %i 1
   while %i <= 3 {
     var %iin $findtok(%inspace,$gettok(%outspace,%i,32),32)
-    var %c $calc($gettok(%incolor,%iin,32) * $omni.intmax($gettok(%outspace,$calc(%i + 3),32)) / $omni.intmax($gettok(%inspace,$calc(%iin + 3),32)))
-    var %c $iif(%xgx1555,$floor(%c),$round(%c,0))
+    var %cin $gettok(%incolor,%iin,32)
+    var %depthin $gettok(%inspace,$calc(%iin + 3),32))
+    if (%depthinreal > %depthin) {
+      var %cin $omni.color.msbtolsb(%cin,%depthin,%depthinreal)
+      var %depthin %depthinreal
+    }
+    var %maxin $omni.intmax(%depthin)
+    var %depthout $gettok(%outspace,$calc(%i + 3),32)
+    var %depthoutextra $calc(%depthoutreal - %depthout)
+    var %maxout $omni.intmax($iif(%depthoutextra <= 0,%depthout,%depthoutreal))
+    var %c $calc(%cin * %maxout / %maxin)
+    if (%depthoutextra <= 0) {
+      var %c $round(%c,0)
+    }
+    else {
+      var %c1 $round($calc(%c / (2 ^ %depthoutextra)),0)
+      var %c1x $omni.color.msbtolsb(%c1,%depthout,%depthoutreal)
+      var %c2 $calc(%c1 + $iif(%c1x <= %c,1,-1))
+      var %c2x $omni.color.msbtolsb(%c2,%depthout,%depthoutreal)
+      var %c $iif($abs($calc(%c - %c1x)) < $abs($calc(%c - %c2x)),%c1,%c2)
+    }
     var %outcolor %outcolor %c
     inc %i
   }
-  if %rgb1555 || %bgr1555 {
-    var %outcolor0
-    var %outcolor1
-    var %i 1
-    while %i <= 3 {
-      var %c $gettok(%outcolor,%i,32)
-      var %c0 $iif(%c == 63,62,$and($calc(%c + 1),62))
-      var %c1 $or(%c,1)
-      var %outcolor0 %outcolor0 %c0
-      var %outcolor1 %outcolor1 %c1
-      inc %i
-    }
-    var %sim0 $omni.color.similarity(%incolor,%inspace,%outcolor0,%outspace)
-    var %sim1 $omni.color.similarity(%incolor,%inspace,%outcolor1,%outspace)
-    ; echo -s . %outcolor0 = %sim0 . %outcolor1 = %sim1
-    var %outcolor $iif(%sim0 >= %sim1,%outcolor0,%outcolor1)
-  }
   return %outcolor
+}
+/omni.color.msbtolsb {
+  if ($2 >= $3) {
+    return $1
+  }
+  var %n $calc($3 - $2)
+  var %x $calc($1 * (2 ^ %n))
+  var %n $2
+  while ($3 > %n) {
+    var %x $calc(%x + $floor($calc(%x / (2 ^ %n))))
+    var %n $calc(%n * 2)
+  }
+  return %x
 }
 /omni.color.similarity {
   var %space R G B 16 16 16
@@ -3345,10 +3362,7 @@
     return $base($calc(($2 * 64 + $3) * 32 + $4),10,16,4)
   }
   if ($1 == RGB1555) || ($1 == BGR1555) {
-    var %c1 $floor($calc($2 / 2))
-    var %c2 $floor($calc($3 / 2))
-    var %c3 $floor($calc($4 / 2))
-    return $base($calc(((($2 % 2) * 32 + %c1) * 32 + %c2) * 32 + %c3),10,16,4)
+    return $base($calc(((($3 % 2) * 32 + $2) * 32 + $floor($calc($3 / 2))) * 32 + $4),10,16,4)
   }
   if ($1 == xLIBC) {
     return $base($calc(($3 * 32 + $4) % 256),10,16,2)
@@ -3367,7 +3381,7 @@
   }
   if ($1 == RGB1555) || ($1 == BGR1555) {
     var %i $floor($calc(%c / 32768))
-    return $calc($floor($calc((%c % 32768) / 1024)) * 2 + %i) $calc($floor($calc((%c % 1024) / 32)) * 2 + %i) $calc((%c % 32) * 2 + %i)
+    return $floor($calc((%c % 32768) / 1024)) $calc($floor($calc((%c % 1024) / 32)) * 2 + %i) $calc(%c % 32)
   }
 }
 /omni.color.space {
@@ -3375,10 +3389,10 @@
     return $iif($2,R G B 5 6 5,xLIBC)
   }
   if ($1 == RGB1555) || $regex($1,/^1[-:]5[-:]5[-:]5$/) {
-    return $iif($2,R G B 6 6 6,RGB1555)
+    return $iif($2,R G B 5 6 5 6,RGB1555)
   }
-  if $1 == BGR1555) {
-    return $iif($2,B G R 6 6 6,BGR1555)
+  if ($1 == BGR1555) {
+    return $iif($2,B G R 5 6 5 6,BGR1555)
   }
   if $regex($1,/^(?:(R)(G)(B)|(B)(G)(R))(15|16|24)$/i) {
     var %b $floor($calc($regml(4) / 3))
