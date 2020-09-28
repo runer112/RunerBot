@@ -657,6 +657,10 @@
   .fclose omni.z80.ops
   return %r
 }
+/omni.z80.pastelink {
+  var %link $1
+  return $iif(error* !iswm %link,%link,$omni.z80.color.error $+ Paste error)
+}
 /omni.z80.d.pastebin {
   tinyurl $12 omni.z80.d.tinyurl $1-11
 }
@@ -673,7 +677,7 @@
   var %dishex $10
   var %disassembly $11
   var %pastebin $12
-  %target $omni.class(%class) Disassembly $omni.divider $iif(error* !iswm %pastebin,%pastebin $omni.divider) $omni.z80.color.bold($calc($len(%dishex) / 2) bytes) $iif($lines($omni.file(disassembly.txt,%class)) <= 10,$omni.divider $replace(%disassembly,$chr(160),$chr(32)))
+  %target $omni.class(%class) Disassembly $omni.divider $omni.z80.pastelink(%pastebin) $omni.divider $omni.z80.color.bold($calc($len(%dishex) / 2) bytes) $iif($lines($omni.file(disassembly.txt,%class)) <= 10,$omni.divider $replace(%disassembly,$chr(160),$chr(32)))
 }
 /omni.z80.a.pastebin {
   tinyurl $9 omni.z80.a.tinyurl $1-8
@@ -703,7 +707,7 @@
     }
     inc %i
   }
-  %target $omni.class(%class) Assembly $omni.divider $iif(error* !iswm %pastebin,%pastebin $omni.divider) $omni.z80.color.bold($calc($len($strip(%assembly)) / 2) bytes) $iif($len(%assembly) <= 50,$omni.divider $omni.z80.color.def $+ %assembly)
+  %target $omni.class(%class) Assembly $omni.divider $omni.z80.pastelink(%pastebin) $omni.divider $omni.z80.color.bold($calc($len($strip(%assembly)) / 2) bytes) $iif($len(%assembly) <= 50,$omni.divider $omni.z80.color.def $+ %assembly)
 }
 /omni.z80.d {
   tokenize 32 $remove($1,$chr(32)) $2-
@@ -3051,6 +3055,9 @@
     return
   }
   return 1 $+ $base($calc(%a - 1),10,2,7)
+}
+/omni.z80.color.error {
+  return 04
 }
 /omni.z80.color.op {
   return 02
