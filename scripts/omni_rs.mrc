@@ -34,17 +34,11 @@ on *:connect: {
     nick $mnick
     timeromni.nick 0 60 omni.nick
   }
-  join #omnimaga
-  join #omnimaga-spam
-  join #omnimaga-ops
-  join #fishtankcity
   join #cemetech
-  join #tiplanet
   join #cemu-dev
   join #ez80-dev
   join #ti
-  join #tiboy-testing
-  join #tipython-dev
+  join #tiplanet
 }
 on *:disconnect: {
   if !%dontreconnect {
