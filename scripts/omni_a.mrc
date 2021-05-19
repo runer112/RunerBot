@@ -419,7 +419,7 @@
     var %query %assembly
     goto disassembly
   }
-  rafb 1 %file omni.z80.a.pastebin $1-8
+  paste %file omni.z80.a.pastebin $1-8
   halt
   :disassembly
   if $findtok(%query,add,32) || $findtok(%query,ccf,32) || $findtok(%query,daa,32) {
@@ -460,7 +460,7 @@
       halt
     }
     var %disassembly $omni.z80.d(%dishex,%model,%class,%adl)
-    rafb -nx Z80 Disassembly 1m $omni.pastebin.devkey %file omni.z80.d.pastebin $1-8 %adl %dishex $replace(%disassembly,$chr(32),$chr(160))
+    paste %file omni.z80.d.pastebin $1-8 %adl %dishex $replace(%disassembly,$chr(32),$chr(160))
     halt
   }
 }
