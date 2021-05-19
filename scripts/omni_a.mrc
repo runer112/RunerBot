@@ -414,7 +414,7 @@
     %errortarget $omni.class(%class) ERROR $omni.divider Could not assemble: $gettok(%assembly,2-,32)
     halt
   }
-  var %file $omni.file(assembly.txt,%class)
+  var %file $omni.file(assemblyhex.txt,%class)
   if ($lines(%file) == 1) && (.d !isin %query) {
     var %query %assembly
     goto disassembly
