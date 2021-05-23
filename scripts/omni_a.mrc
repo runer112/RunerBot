@@ -2583,7 +2583,7 @@
   return %r
 }
 /omni.z80.a.calc.main {
-  if $regex($1,/(?<!')[^\s\w()*/\-+\%^&|$@' $+ $chr(44) $+ <>=]/) {
+  if $regex($1,/(?<!')[^\s\w()*/\-+~\%^&|$@' $+ $chr(44) $+ <>=]/) {
     return
   }
   set -ln %equ $omni.z80.a.calc.spaceify($1)
@@ -2629,6 +2629,11 @@
       elseif (%a == +) || (%a == -) {
         omni.z80.a.setarg1 0
         set -ln %op %a
+        dec %iterations
+      }
+      elseif (%a == ~) {
+        omni.z80.a.setarg1 -1
+        set -ln %op -
         dec %iterations
       }
       elseif (%a == %) {
