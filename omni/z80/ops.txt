@@ -5,9 +5,9 @@
 
 00000000				nop			1		4		1		--------	No operation is performed.
 00001000				ex af,af'		1		4		1		--------	Exchanges the contents of .reg16af[3;1] and .reg16sh[3;1].
-00010000........			djnz ofs8		2		13/8		1		--------	The .reg8[0;1] register is decremented, and if not zero, the signed value .imm8[] is added to .regpc[]. The jump is measured from the start of the instruction opcode.
-00011000........			jr ofs8			2		12		1		--------	The signed value .ofs8[] is added to .regpc[]. The jump is measured from the start of the instruction opcode.
-001..000........			jr cc,ofs8		2		12/7		1		--------	If condition .cc[] is true, the signed value .ofs8[] is added to .regpc[]. The jump is measured from the start of the instruction opcode.
+00010000........			djnz ofs8		2		13/8		1		--------	The .reg8[0;1] register is decremented, and if not zero, the signed value .ofs8[] is added to .regpc[] (after the instruction).
+00011000........			jr ofs8			2		12		1		--------	The signed value .ofs8[] is added to .regpc[] (after the instruction).
+001..000........			jr cc,ofs8		2		12/7		1		--------	If condition .cc[] is true, the signed value .ofs8[] is added to .regpc[] (after the instruction).
 
 00..0001................		ld reg16,imm16		3		10		1		--------	Loads .imm16[] into register .reg16[].
 00..1001				add hl,reg16		1		11		1		--*H*-NC	The value of .reg16[] is added to .reg16[2;1].
