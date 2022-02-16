@@ -30,7 +30,7 @@
     sockmark %sockname /index.php?title= $+ $1 $iif(%get != $null,1 %get,0 0) $iif(%tinyurl,wikiti.tinyurl.1) $2-
   }
   else {
-    $iif(%tinyurl,wikiti.tinyurl.1) $2- https://wikiti.brandonw.net/index.php?title= $+ $1
+    $iif(%tinyurl,wikiti.tinyurl.1) $2- https://wikiti.brandonw.net/?title= $+ $1
   }
 }
 /wikiti.tinyurl.1 {
