@@ -20,12 +20,18 @@
       var %flags $right(%flags,-1)
     }
   }
-  var %sockname
-  while (%sockname == $null) || ($sock(%sockname) != $null) {
-    var %sockname $+(wikiti.,$rand(1,999999999999))
+  ; I can't get SSL to work in my old version of mIRC
+  if 0 {
+    var %sockname
+    while (%sockname == $null) || ($sock(%sockname) != $null) {
+      var %sockname $+(wikiti.,$rand(1,999999999999))
+    }
+    sockopen %sockname wikiti.brandonw.net 80
+    sockmark %sockname /index.php?title= $+ $1 $iif(%get != $null,1 %get,0 0) $iif(%tinyurl,wikiti.tinyurl.1) $2-
   }
-  sockopen %sockname wikiti.brandonw.net 80
-  sockmark %sockname /index.php?title= $+ $1 $iif(%get != $null,1 %get,0 0) $iif(%tinyurl,wikiti.tinyurl.1) $2- 
+  else {
+    $iif(%tinyurl,wikiti.tinyurl.1) $2- https://wikiti.brandonw.net/index.php?title= $+ $1
+  }
 }
 /wikiti.tinyurl.1 {
   var %last $gettok($1-,$numtok($1-,32),32)
