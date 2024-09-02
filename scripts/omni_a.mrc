@@ -555,7 +555,7 @@
     var %cycles $gettok(%r,4,9)
     if %ez80 {
       var %ccycles $gettok(%r,5,9)
-      var %documented *
+      var %ub 0
       var %s $iif(%suffix == 40 || %suffix == 52,1,0)
       var %is $iif(%suffix == 40 || %suffix == 49,1,0)
       var %xcycles 0
@@ -595,7 +595,7 @@
       }
     }
     else {
-      var %documented $gettok(%r,5,9)
+      var %ub $iif($gettok(%r,5,9),0,1)
       var %ccycles *
     }
     if $chr(47) isin %cycles && reg8 isin %disstripped {
@@ -608,7 +608,7 @@
     }
     var %flags $gettok(%r,6,9)
     var %description $gettok(%r,7,9)
-    %target $omni.class(%class) Instruction $iif(%disassembly != %disassembly2,$omni.divider Class: $omni.z80.color.bold(%disassembly)) $iif($left($strip(%disassembly2),1) != .,$omni.divider Instance: $omni.z80.color.bold(%disassembly2) $+([,$omni.z80.color.def,%dishex,$omni.z80.color.punct,])) $iif(%bytes != *,$omni.divider Bytes: $omni.z80.color.bold(%bytes)) $iif((%cycles != *) || (%ccycles != *),$omni.divider Cycles: $omni.z80.color.bold(%cycles $+ $iif(%ez80 && (%ccycles != 0),$chr(32) $+ MEM $+ $chr(44) %ccycles CPU))) $iif(%flags != *,$omni.divider Flags: $omni.z80.color.bold(%flags)) $iif(%documented == 0,$omni.divider Undocumented) $iif(!$istok($omni.nodesc,$gettok(%target,2,32),32),$iif(%description != *,$omni.divider Description: $omni.z80.textparse(%description,%model,%class,%dishex))) $iif(%wikiti != $null,$omni.divider More info: %wikiti)
+    %target $omni.class(%class) Instruction $iif(%disassembly != %disassembly2,$omni.divider Class: $omni.z80.color.bold(%disassembly)) $iif($left($strip(%disassembly2),1) != .,$omni.divider Instance: $omni.z80.color.bold(%disassembly2) $+([,$omni.z80.color.def,%dishex,$omni.z80.color.punct,])) $iif(%bytes != *,$omni.divider Bytes: $omni.z80.color.bold(%bytes)) $iif((%cycles != *) || (%ccycles != *),$omni.divider Cycles: $omni.z80.color.bold(%cycles $+ $iif(%ez80 && (%ccycles != 0),$chr(32) $+ MEM $+ $chr(44) %ccycles CPU))) $iif(%flags != *,$omni.divider Flags: $omni.z80.color.bold(%flags)) $iif(%ub,$omni.divider Undefined behavior) $iif(!$istok($omni.nodesc,$gettok(%target,2,32),32),$iif(%description != *,$omni.divider Description: $omni.z80.textparse(%description,%model,%class,%dishex))) $iif(%wikiti != $null,$omni.divider More info: %wikiti)
   }
   else {
     var %c 3
@@ -629,17 +629,17 @@
     }
     inc %c
     if %ez80 {
-      var %documented *
+      var %ub 0
     }
     else {
-      var %documented $gettok(%r,%c,9)
+      var %ub $iif($gettok(%r,%c,9),0,1)
       inc %c
     }
     var %flags $gettok(%r,%c,9)
     inc %c
     var %description $gettok(%r,%c,9)
     inc %c
-    %target $omni.class(%class) Instruction $iif(%disassembly != %disassembly2,$omni.divider Class: $omni.z80.color.bold(%disassembly)) $iif($left($strip(%disassembly2),1) != .,$omni.divider Instance: $omni.z80.color.bold(%disassembly2) $+([,$omni.z80.color.def,%dishex,$omni.z80.color.punct,])) $iif(%bytes != *,$omni.divider Bytes: $omni.z80.color.bold(%bytes)) $iif(%cycles != *,$omni.divider Cycles: $omni.z80.color.bold(%cycles)) $iif(%flags != *,$omni.divider Flags: $omni.z80.color.bold(%flags)) $iif(%documented == 0,$omni.divider Undocumented) $iif(!$istok($omni.nodesc,$gettok(%target,2,32),32),$iif(%description != *,$omni.divider Description: $omni.z80.textparse(%description,%model,%class,%dishex))) $iif(%wikiti != $null,$omni.divider More info: %wikiti)
+    %target $omni.class(%class) Instruction $iif(%disassembly != %disassembly2,$omni.divider Class: $omni.z80.color.bold(%disassembly)) $iif($left($strip(%disassembly2),1) != .,$omni.divider Instance: $omni.z80.color.bold(%disassembly2) $+([,$omni.z80.color.def,%dishex,$omni.z80.color.punct,])) $iif(%bytes != *,$omni.divider Bytes: $omni.z80.color.bold(%bytes)) $iif(%cycles != *,$omni.divider Cycles: $omni.z80.color.bold(%cycles)) $iif(%flags != *,$omni.divider Flags: $omni.z80.color.bold(%flags)) $iif(%ub,$omni.divider Undefined behavior) $iif(!$istok($omni.nodesc,$gettok(%target,2,32),32),$iif(%description != *,$omni.divider Description: $omni.z80.textparse(%description,%model,%class,%dishex))) $iif(%wikiti != $null,$omni.divider More info: %wikiti)
   }
 }
 /omni.z80.instr.lookup {
