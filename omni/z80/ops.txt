@@ -5,11 +5,11 @@
 
 00000000				nop			1		4		1		--------	No operation is performed.
 00001000				ex af,af'		1		4		1		--------	Exchanges the contents of .reg16af[3;1] and .reg16sh[3;1].
-00010000........			djnz ofs8		2		13/8		1		--------	The .reg8[0;1] register is decremented, and if not zero, the signed value .ofs8[] is added to .regpc[] (after the instruction).
+00010000........			djnz ofs8		2		13/8		1		--------	.reg8[0;1] is decremented, and if not zero, the signed value .ofs8[] is added to .regpc[] (after the instruction).
 00011000........			jr ofs8			2		12		1		--------	The signed value .ofs8[] is added to .regpc[] (after the instruction).
 001..000........			jr cc,ofs8		2		12/7		1		--------	If condition .cc[] is true, the signed value .ofs8[] is added to .regpc[] (after the instruction).
 
-00..0001................		ld reg16,imm16		3		10		1		--------	Loads .imm16[] into register .reg16[].
+00..0001................		ld reg16,imm16		3		10		1		--------	Loads .imm16[] into .reg16[].
 00..1001				add hl,reg16		1		11		1		--*H*-NC	The value of .reg16[] is added to .reg16[2;1].
 
 00000010				ld (bc),a		1		7		1		--------	Stores .reg8[7;1] into the byte of memory pointed to by .reg16[0;1].
@@ -40,7 +40,7 @@
 00111111				ccf			1		4		1		--***-0*	Inverts the carry flag.
 
 01110110				halt			1		4		1		--------	Suspends CPU operation until an interrupt or reset occurs.
-01......				ld reg8,reg8		1		4/7		1		--------	The contents of the second register .reg8[] are loaded into the first register .reg8[].
+01......				ld reg8,reg8		1		4/7		1		--------	The contents of the second .reg8[] are loaded into the first .reg8[].
 
 10000...				add a,reg8		1		4/7		1		SZ*H*VNC	Adds .reg8[] to .reg8[7;1].
 10001...				adc a,reg8		1		4/7		1		SZ*H*VNC	Adds .reg8[] and the carry flag to .reg8[7;1].
@@ -141,10 +141,10 @@
 1110110101110110			im 1			2		8		0		--------	Sets interrupt mode 1.
 1110110101111110			im 2			2		8		0		--------	Sets interrupt mode 2.
 
-1110110101000111			ld i,a			2		9		1		--------	Stores the value of .reg8[7;1] into register .reg8ir[0;1].
-1110110101001111			ld r,a			2		9		1		--------	Stores the value of .reg8[7;1] into register .reg8ir[1;1].
-1110110101010111			ld a,i			2		9		1		SZ*0**0-	Stores the value of register .reg8ir[0;1] into .reg8[7;1].
-1110110101011111			ld a,r			2		9		1		SZ*0**0-	Stores the value of register .reg8ir[1;1] into .reg8[7;1].
+1110110101000111			ld i,a			2		9		1		--------	Stores the value of .reg8[7;1] into .reg8ir[0;1].
+1110110101001111			ld r,a			2		9		1		--------	Stores the value of .reg8[7;1] into .reg8ir[1;1].
+1110110101010111			ld a,i			2		9		1		SZ*0**0-	Stores the value of .reg8ir[0;1] into .reg8[7;1].
+1110110101011111			ld a,r			2		9		1		SZ*0**0-	Stores the value of .reg8ir[1;1] into .reg8[7;1].
 1110110101100111			rrd			2		18		1		SZ*0*P0-	The contents of the low-order nibble of .reg8[6;1] are copied to the low-order nibble of .reg8[7;1]. The previous contents are copied to the high-order nibble of .reg8[6;1]. The previous contents are copied to the low-order nibble of .reg8[6;1].
 1110110101101111			rld			2		18		1		SZ*0*P0-	The contents of the low-order nibble of .reg8[6;1] are copied to the high-order nibble of .reg8[6;1]. The previous contents are copied to the low-order nibble of .reg8[7;1]. The previous contents are copied to the low-order nibble of .reg8[6;1].
 
@@ -174,7 +174,7 @@
 ;IX PRIMARY INSTRUCTIONS
 
 1101110100..1001			add ix,reg16		2		15		1		--*H*-NC	The value of .reg16[] is added to .regi[].
-1101110100100001................	ld ix,imm16		4		14		1		--------	Loads .imm16[] into register .regi[].
+1101110100100001................	ld ix,imm16		4		14		1		--------	Loads .imm16[] into .regi[].
 
 1101110100100010................	ld (imm16),ix		4		20		1		--------	Stores .regi[] into the word of memory pointed to by .imm16[].
 1101110100101010................	ld ix,(imm16)		4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .regi[].
@@ -255,7 +255,7 @@
 ;IY PRIMARY INSTRUCTIONS
 
 1111110100..1001			add iy,reg16		2		15		1		--*H*-NC	The value of .reg16[] is added to .regi[].
-1111110100100001................	ld iy,imm16		4		14		1		--------	Loads .imm16[] into register .regi[].
+1111110100100001................	ld iy,imm16		4		14		1		--------	Loads .imm16[] into .regi[].
 
 1111110100100010................	ld (imm16),iy		4		20		1		--------	Stores .regi[] into the word of memory pointed to by .imm16[].
 1111110100101010................	ld iy,(imm16)		4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .regi[].
