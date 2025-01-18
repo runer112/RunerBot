@@ -246,6 +246,9 @@
         elseif $omni.color.check(%chan,%msg1) {
           var %do omni.color $1-
         }
+        elseif $runerbot.check(%chan,%msg1) {
+          var %do runerbot $1-
+        }
         elseif $regex(%msg1,/^port /i) {
           var %do omni.z80 %nick %chan %omnomirc %target %errortarget $left(%msg,1) $+ ? %msg1
         }
@@ -1677,6 +1680,7 @@
   var %ez80 $iif(%class == ez80,1,0)
   var %adl %ez80
   var %hex
+  var %org 0
   .fclose omni.z80.a.*
   .fopen -o omni.z80.a.file $omni.file(assembly.txt,%class)
   .fopen -o omni.z80.a.hexfile $omni.file(assemblyhex.txt,%class)
@@ -2556,6 +2560,7 @@
     while %bin != $null {
       var %hex %hex $+ $base($left(%bin,8),2,16,2)
       var %bin $right(%bin,-8)
+      inc %org
     }
     var %str %str $+ %hex
     .fwrite -n omni.z80.a.file $chr(9) $+ %m
@@ -2595,6 +2600,7 @@
   var %outbase $iif($3 != $null,$3,auto)
   set %outbits $iif($4 != $null,$4,16)
   var %modifiers $5
+  var %org $6
   var %max $calc(2 ^ %outbits)
   set %signedmax $calc(%max / 2)
   set %overflow 0
