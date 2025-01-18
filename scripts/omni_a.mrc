@@ -1658,6 +1658,10 @@
   }
   return $gettok(nz_z_nc_c_po_pe_p_m,$calc($1 + 1),95)
 }
+/omni.z80.sym.f {
+  set %omni.z80.d.color $omni.z80.color.flag
+  return $gettok(!zf_zf_!cf_cf_!pvf_pvf_!sf_sf,$calc($1 + 1),95)
+}
 /omni.z80.sym.alu {
   var %acomma .reg8[7;1] $+ $chr(44)
   var %acommamaybe $chr(160) $+ $iif(%omni.z80.d.ez80,%acomma,)

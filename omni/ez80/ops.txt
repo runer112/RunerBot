@@ -33,14 +33,14 @@
 00110110........			ld (hl),imm8		2		2F+1W				--------	Loads .imm8[] into .reg8[6].
 00...110........			ld reg8,imm8		2		2F				--------	Loads .imm8[] into .reg8[].
 
-00000111				rlca			1		1F				---0--0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to the carry flag and bit 0.
-00001111				rrca			1		1F				---0--0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to the carry flag and bit 7.
-00010111				rla			1		1F				---0--0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to the carry flag and the previous contents of the carry flag are copied to bit 0.
-00011111				rra			1		1F				---0--0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of the carry flag are copied to bit 7.
+00000111				rlca			1		1F				---0--0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
+00001111				rrca			1		1F				---0--0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
+00010111				rla			1		1F				---0--0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
+00011111				rra			1		1F				---0--0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
 00100111				daa			1		1F				SZ-*-P-*	Adjusts .reg8[7;1] for BCD addition and subtraction operations.
 00101111				cpl			1		1F				---1--1-	The contents of .reg8[7;1] are inverted (one's complement).
-00110111				scf			1		1F				---0--01	Sets the carry flag.
-00111111				ccf			1		1F				---*--0*	Inverts the carry flag.
+00110111				scf			1		1F				---0--01	Sets .f[3].
+00111111				ccf			1		1F				---*--0*	Inverts .f[3].
 
 010.00.011...000			ret.s cc		2		cc ? 3F+(3+(*SPL&1))R+2 : 2F+1	--------	If condition .cc[] is true, a byte is popped from SPL. If the byte is 2, ADL mode is reset and the top stack entry of SPS is popped into .regpc[]. If the byte is 3, ADL mode is set and the top stack entry of SPS is popped into .regpc[].
 010.10.111...000			ret.l cc		2		cc ? 3F+(3+(*SPL&1))R+2 : 2F+1	--------	If condition .cc[] is true, a byte is popped from SPL. If the byte is 2, ADL mode is reset and the top stack entry of SPS is popped into .regpc[]. If the byte is 3, ADL mode is set and the top stack entry of SPS is popped into .regpc[].
@@ -109,12 +109,12 @@
 
 10000110				add a,(hl)		1		1F+1R				SZ-H-VNC	Adds .reg8[6] to .reg8[7;1].
 10000...				add a,reg8		1		1F				SZ-H-VNC	Adds .reg8[] to .reg8[7;1].
-10001110				adc a,(hl)		1		1F+1R				SZ-H-VNC	Adds .reg8[6] and the carry flag to .reg8[7;1].
-10001...				adc a,reg8		1		1F				SZ-H-VNC	Adds .reg8[] and the carry flag to .reg8[7;1].
+10001110				adc a,(hl)		1		1F+1R				SZ-H-VNC	Adds .reg8[6] and .f[3] to .reg8[7;1].
+10001...				adc a,reg8		1		1F				SZ-H-VNC	Adds .reg8[] and .f[3] to .reg8[7;1].
 10010110				sub a,(hl)		1		1F+1R				SZ-H-VNC	Subtracts .reg8[6] from .reg8[7;1].
 10010...				sub a,reg8		1		1F				SZ-H-VNC	Subtracts .reg8[] from .reg8[7;1].
-10011110				sbc a,(hl)		1		1F+1R				SZ-H-VNC	Subtracts .reg8[6] and the carry flag from .reg8[7;1].	
-10011...				sbc a,reg8		1		1F				SZ-H-VNC	Subtracts .reg8[] and the carry flag from .reg8[7;1].	
+10011110				sbc a,(hl)		1		1F+1R				SZ-H-VNC	Subtracts .reg8[6] and .f[3] from .reg8[7;1].	
+10011...				sbc a,reg8		1		1F				SZ-H-VNC	Subtracts .reg8[] and .f[3] from .reg8[7;1].	
 10100110				and a,(hl)		1		1F+1R				SZ-1-P00	Bitwise AND on .reg8[7;1] with .reg8[6].
 10100...				and a,reg8		1		1F				SZ-1-P00	Bitwise AND on .reg8[7;1] with .reg8[].
 10101110				xor a,(hl)		1		1F+1R				SZ-0-P00	Bitwise XOR on .reg8[7;1] with .reg8[6].
@@ -152,9 +152,9 @@
 ;11111101				IY PRIMARY INSTRUCTIONS
 
 11000110........			add a,imm8		2		2F				SZ-H-VNC	Adds .imm8[] to .reg8[7;1].
-11001110........			adc a,imm8		2		2F				SZ-H-VNC	Adds .imm8[] and the carry flag to .reg8[7;1].
+11001110........			adc a,imm8		2		2F				SZ-H-VNC	Adds .imm8[] and .f[3] to .reg8[7;1].
 11010110........			sub a,imm8		2		2F				SZ-H-VNC	Subtracts .imm8[] from .reg8[7;1].
-11011110........			sbc a,imm8		2		2F				SZ-H-VNC	Subtracts .imm8[] and the carry flag from .reg8[7;1].
+11011110........			sbc a,imm8		2		2F				SZ-H-VNC	Subtracts .imm8[] and .f[3] from .reg8[7;1].
 11100110........			and a,imm8		2		2F				SZ-1-P00	Bitwise AND on .reg8[7;1] with .imm8[].
 11101110........			xor a,imm8		2		2F				SZ-0-P00	Bitwise XOR on .reg8[7;1] with .imm8[].
 11110110........			or a,imm8		2		2F				SZ-0-P00	Bitwise OR on .reg8[7;1] with .imm8[].
@@ -165,21 +165,21 @@
 
 ;BIT INSTRUCTIONS
 
-1100101100000110			rlc (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated left one bit position. The contents of bit 7 are copied to the carry flag and bit 0.
-1100101100000...			rlc reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to the carry flag and bit 0.
-1100101100001110			rrc (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated right one bit position. The contents of bit 0 are copied to the carry flag and bit 7.
-1100101100001...			rrc reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to the carry flag and bit 7.
-1100101100010110			rl (hl)			2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated left one bit position. The contents of bit 7 are copied to the carry flag and the previous contents of the carry flag are copied to bit 0.
-1100101100010...			rl reg8			2		2F				SZ-0-P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to the carry flag and the previous contents of the carry flag are copied to bit 0.
-1100101100011110			rr (hl)			2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of the carry flag are copied to bit 7.
-1100101100011...			rr reg8			2		2F				SZ-0-P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of the carry flag are copied to bit 7.
-1100101100100110			sla (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are shifted left one bit position. The contents of bit 7 are copied to the carry flag and a zero is put into bit 0.
-1100101100100...			sla reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are shifted left one bit position. The contents of bit 7 are copied to the carry flag and a zero is put into bit 0.
-1100101100101110			sra (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are shifted right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of bit 7 are unchanged.
-1100101100101...			sra reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of bit 7 are unchanged.
+1100101100000110			rlc (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
+1100101100000...			rlc reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
+1100101100001110			rrc (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
+1100101100001...			rrc reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
+1100101100010110			rl (hl)			2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
+1100101100010...			rl reg8			2		2F				SZ-0-P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
+1100101100011110			rr (hl)			2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
+1100101100011...			rr reg8			2		2F				SZ-0-P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
+1100101100100110			sla (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
+1100101100100...			sla reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
+1100101100101110			sra (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
+1100101100101...			sra reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
 1100101100110...			trap			2		2F				--------	It's a trap!
-1100101100111110			srl (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are shifted right one bit position. The contents of bit 0 are copied to the carry flag and a zero is put into bit 7.
-1100101100111...			srl reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to the carry flag and a zero is put into bit 7.
+1100101100111110			srl (hl)		2		2F+1R+1W+1			SZ-0-P0C	The contents of .reg8[6] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
+1100101100111...			srl reg8		2		2F				SZ-0-P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
 
 1100101101...110			bit imm3,(hl)		2		2F+1R				*Z-1-*0-	Tests bit .imm3[] of .reg8[6].
 1100101101......			bit imm3,reg8		2		2F				*Z-1-*0-	Tests bit .imm3[] of .reg8[].
@@ -221,8 +221,8 @@
 1110110101110001			trap			2		2F				--------	It's a trap!
 1110110101...001			out (bc),reg8		2		2F+1W				--------	Writes .reg8[] to port .reg16[0;1].
 
-1110110101..0010			sbc hl,reg24		2		2F				SZ-H-VNC	Subtracts .reg24[] and the carry flag from .reg24[2;1].
-1110110101..1010			adc hl,reg24		2		2F				SZ-H-VNC	Adds .reg24[] and the carry flag to .reg24[2;1].
+1110110101..0010			sbc hl,reg24		2		2F				SZ-H-VNC	Subtracts .reg24[] and .f[3] from .reg24[2;1].
+1110110101..1010			adc hl,reg24		2		2F				SZ-H-VNC	Adds .reg24[] and .f[3] to .reg24[2;1].
 
 1110110101..0011................	ld (imm24),reg24	5		(4+.il)F+(2+.l)W		--------	Stores .reg24[] into the word of memory pointed to by .imm24[].
 1110110101..1011................	ld reg24,(imm24)	5		(4+.il)F+(2+.l)R		--------	Loads the word of memory pointed to by .imm24[] into .reg24[].
@@ -336,12 +336,12 @@
 
 110111011000010.			add a,reg8index		2		2F				SZ-H-VNC	Adds .regi8[] to .reg8[7;1].
 1101110110000110........		add a,(ix+ofs8)		3		3F+1R				SZ-H-VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] to .reg8[7;1].
-110111011000110.			adc a,reg8index		2		2F				SZ-H-VNC	Adds .regi8[] and the carry flag to .reg8[7;1].
-1101110110001110........		adc a,(ix+ofs8)		3		3F+1R				SZ-H-VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and the carry flag to .reg8[7;1].
+110111011000110.			adc a,reg8index		2		2F				SZ-H-VNC	Adds .regi8[] and .f[3] to .reg8[7;1].
+1101110110001110........		adc a,(ix+ofs8)		3		3F+1R				SZ-H-VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] to .reg8[7;1].
 110111011001010.			sub a,reg8index		2		2F				SZ-H-VNC	Subtracts .regi8[] from .reg8[7;1].
 1101110110010110........		sub a,(ix+ofs8)		3		3F+1R				SZ-H-VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1].
-110111011001110.			sbc a,reg8index		2		2F				SZ-H-VNC	Subtracts .regi8[] and the carry flag from .reg8[7;1].
-1101110110011110........		sbc a,(ix+ofs8)		3		3F+1R				SZ-H-VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and the carry flag from .reg8[7;1].
+110111011001110.			sbc a,reg8index		2		2F				SZ-H-VNC	Subtracts .regi8[] and .f[3] from .reg8[7;1].
+1101110110011110........		sbc a,(ix+ofs8)		3		3F+1R				SZ-H-VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] from .reg8[7;1].
 110111011010010.			and a,reg8index		2		2F				SZ-1-P00	Bitwise AND on .reg8[7;1] with .regi8[].
 1101110110100110........		and a,(ix+ofs8)		3		3F+1R				SZ-1-P00	Bitwise AND on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
 110111011010110.			xor a,reg8index		2		2F				SZ-0-P00	Bitwise XOR on .reg8[7;1] with .regi8[].
@@ -365,13 +365,13 @@
 
 ;IX BIT INSTRUCTIONS
 
-1101110111001011........00000110	rlc (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to the carry flag and bit 0.
-1101110111001011........00001110	rrc (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to the carry flag and bit 7.
-1101110111001011........00010110	rl (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to the carry flag and the previous contents of the carry flag are copied to bit 0.
-1101110111001011........00011110	rr (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of the carry flag are copied to bit 7.
-1101110111001011........00100110	sla (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to the carry flag and a zero is put into bit 0.
-1101110111001011........00101110	sra (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of bit 7 are unchanged.
-1101110111001011........00111110	srl (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to the carry flag and a zero is put into bit 7.
+1101110111001011........00000110	rlc (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
+1101110111001011........00001110	rrc (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
+1101110111001011........00010110	rl (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
+1101110111001011........00011110	rr (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
+1101110111001011........00100110	sla (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
+1101110111001011........00101110	sra (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
+1101110111001011........00111110	srl (ix+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
 
 1101110111001011........01...110	bit imm3,(ix+ofs8)	4		4F+1R				?Z-1-?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
 
@@ -417,12 +417,12 @@
 
 111111011000010.			add a,reg8index		2		2F				SZ-H-VNC	Adds .regi8[] to .reg8[7;1].
 1111110110000110........		add a,(iy+ofs8)		3		3F+1R				SZ-H-VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] to .reg8[7;1].
-111111011000110.			adc a,reg8index		2		2F				SZ-H-VNC	Adds .regi8[] and the carry flag to .reg8[7;1].
-1111110110001110........		adc a,(iy+ofs8)		3		3F+1R				SZ-H-VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and the carry flag to .reg8[7;1].
+111111011000110.			adc a,reg8index		2		2F				SZ-H-VNC	Adds .regi8[] and .f[3] to .reg8[7;1].
+1111110110001110........		adc a,(iy+ofs8)		3		3F+1R				SZ-H-VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] to .reg8[7;1].
 111111011001010.			sub a,reg8index		2		2F				SZ-H-VNC	Subtracts .regi8[] from .reg8[7;1].
 1111110110010110........		sub a,(iy+ofs8)		3		3F+1R				SZ-H-VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1].
-111111011001110.			sbc a,reg8index		2		2F				SZ-H-VNC	Subtracts .regi8[] and the carry flag from .reg8[7;1].
-1111110110011110........		sbc a,(iy+ofs8)		3		3F+1R				SZ-H-VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and the carry flag from .reg8[7;1].
+111111011001110.			sbc a,reg8index		2		2F				SZ-H-VNC	Subtracts .regi8[] and .f[3] from .reg8[7;1].
+1111110110011110........		sbc a,(iy+ofs8)		3		3F+1R				SZ-H-VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] from .reg8[7;1].
 111111011010010.			and a,reg8index		2		2F				SZ-1-P00	Bitwise AND on .reg8[7;1] with .regi8[].
 1111110110100110........		and a,(iy+ofs8)		3		3F+1R				SZ-1-P00	Bitwise AND on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
 111111011010110.			xor a,reg8index		2		2F				SZ-0-P00	Bitwise XOR on .reg8[7;1] with .regi8[].
@@ -446,13 +446,13 @@
 
 ;IY BIT INSTRUCTIONS
 
-1111110111001011........00000110	rlc (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to the carry flag and bit 0.
-1111110111001011........00001110	rrc (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to the carry flag and bit 7.
-1111110111001011........00010110	rl (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to the carry flag and the previous contents of the carry flag are copied to bit 0.
-1111110111001011........00011110	rr (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of the carry flag are copied to bit 7.
-1111110111001011........00100110	sla (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to the carry flag and a zero is put into bit 0.
-1111110111001011........00101110	sra (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to the carry flag and the previous contents of bit 7 are unchanged.
-1111110111001011........00111110	srl (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to the carry flag and a zero is put into bit 7.
+1111110111001011........00000110	rlc (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
+1111110111001011........00001110	rrc (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
+1111110111001011........00010110	rl (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
+1111110111001011........00011110	rr (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
+1111110111001011........00100110	sla (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
+1111110111001011........00101110	sra (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
+1111110111001011........00111110	srl (iy+ofs8)		4		4F+1R+1W+1			SZ-0-P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
 
 1111110111001011........01...110	bit imm3,(iy+ofs8)	4		4F+1R				?Z-1-?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
 
