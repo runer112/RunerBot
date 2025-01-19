@@ -37,6 +37,8 @@ on *:connect: {
   join #cemetech
   join #cemu-dev
   join #ez80-dev
+  join #runerbot
+  join #runerbot2
   join #ti
   join #tiplanet
 }
