@@ -1694,7 +1694,7 @@ _VDispRealOP1		equ 52D5h
 _DispXEqualsNum		equ 52D8h
 _ResetGraphSettings	equ 52DBh
 _InitializeVariables	equ 52DEh
-;52E1h ;bit 4,(9C75h) (this is DEFINITELY returning the status of something when acting as a TI-SmartView Input Pad...this bit is bit 1 of the data byte from a PC HID Set Report request)
+;52E1h ;bit 4,(9C75h) (this is DEFINITELY returning the status of something when acting as a TI-SmartView Input Pad...this bit is bit 1 of the data byte from a .regpc[] HID Set Report request)
 _DelVarSym		equ 52E4h
 _FindAppUpNoCase	equ 52E7h
 _FindAppDnNoCase	equ 52EAh
@@ -2605,7 +2605,7 @@ linkFlags		equ 1Bh
 IDis95h			equ 1		;1 = link routines use machine ID 95h (CBL)
 IDis82h			equ 2		;1 = link routines use machine ID 82h (TI-82)
 IDis83h			equ 3		;1 = link routines use machine ID 83h (TI-83)
-IDis03h			equ 4		;1 = link routines use machine ID 03h (PC to TI-83)
+IDis03h			equ 4		;1 = link routines use machine ID 03h (.regpc[] to TI-83)
 USBenabled		equ 5		;1 = use USB port first, or at least try to
 ;----------------------------------------------------------------------
 ;There is a flag 1Ch (stats-related).

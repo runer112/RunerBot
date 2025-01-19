@@ -1549,11 +1549,11 @@
 }
 /omni.z80.sym.iff1 {
   set %omni.z80.d.color $omni.z80.color.reg
-  return IFF1
+  return iff1
 }
 /omni.z80.sym.iff2 {
   set %omni.z80.d.color $omni.z80.color.reg
-  return IFF2
+  return iff2
 }
 /omni.z80.sym.reg8 {
   set %omni.z80.d.color $omni.z80.color.reg
@@ -1664,6 +1664,10 @@
 /omni.z80.sym.f {
   set %omni.z80.d.color $omni.z80.color.flag
   return $gettok(!zf_zf_!cf_cf_!pvf_pvf_!sf_sf,$calc($1 + 1),95)
+}
+/omni.z80.sym.madl {
+  set %omni.z80.d.color $omni.z80.color.flag
+  return madl
 }
 /omni.z80.sym.alu {
   var %acomma .reg8[7;1] $+ $chr(44)

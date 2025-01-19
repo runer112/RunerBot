@@ -5,63 +5,63 @@
 
 00000000				nop			1		4		1		--------	No operation is performed.
 00001000				ex af,af'		1		4		1		--------	Exchanges the contents of .reg16af[3;1] and .reg16sh[3;1].
-00010000........			djnz ofs8		2		13/8		1		--------	.reg8[0;1] is decremented, and if not zero, the signed value .ofs8[] is added to .regpc[] (after the instruction).
-00011000........			jr ofs8			2		12		1		--------	The signed value .ofs8[] is added to .regpc[] (after the instruction).
-001..000........			jr cc,ofs8		2		12/7		1		--------	If condition .cc[] is true, the signed value .ofs8[] is added to .regpc[] (after the instruction).
+00010000........			djnz ofs8		2		13/8		1		--------	.reg8[0;1] is decremented, and if not zero, the signed value .ofs8[] is added to .regpc[] (after the instruction). `if (--.reg8[0;1]) .regpc[] += .ofs8[]`
+00011000........			jr ofs8			2		12		1		--------	The signed value .ofs8[] is added to .regpc[] (after the instruction). `.regpc[] += .ofs8[]`
+001..000........			jr cc,ofs8		2		12/7		1		--------	If condition .cc[] is true, the signed value .ofs8[] is added to .regpc[] (after the instruction). `if (.cc[]) .regpc[] += .ofs8[]`
 
-00..0001................		ld reg16,imm16		3		10		1		--------	Loads .imm16[] into .reg16[].
-00..1001				add hl,reg16		1		11		1		--*H*-NC	The value of .reg16[] is added to .reg16[2;1].
+00..0001................		ld reg16,imm16		3		10		1		--------	Loads .imm16[] into .reg16[]. `.reg16[] = .imm16[]`
+00..1001				add hl,reg16		1		11		1		--*H*-NC	The value of .reg16[] is added to .reg16[2;1]. `.reg16[2;1] += .reg16[]`
 
-00000010				ld (bc),a		1		7		1		--------	Stores .reg8[7;1] into the byte of memory pointed to by .reg16[0;1].
-00010010				ld (de),a		1		7		1		--------	Stores .reg8[7;1] into the byte of memory pointed to by .reg16[1;1].
-00100010................		ld (imm16),hl		3		16		1		--------	Stores .reg16[2;1] into the word of memory pointed to by .imm16[].
-00110010................		ld (imm16),a		3		13		1		--------	Stores .reg8[7;1] into the byte of memory pointed to by .imm16[].
-00001010				ld a,(bc)		1		7		1		--------	Loads the byte of memory pointed to by .reg16[0;1] into .reg8[7;1].
-00011010				ld a,(de)		1		7		1		--------	Loads the byte of memory pointed to by .reg16[1;1] into .reg8[7;1].
-00101010................		ld hl,(imm16)		3		16		1		--------	Loads the word of memory pointed to by .imm16[] into .reg16[2;1].
-00111010................		ld a,(imm16)		3		13		1		--------	Loads the byte of memory pointed to by .imm16[] into .reg8[7;1].
+00000010				ld (bc),a		1		7		1		--------	Stores .reg8[7;1] into the byte of memory pointed to by .reg16[0;1]. `*(char*).reg16[0;1] = .reg8[7;1]`
+00010010				ld (de),a		1		7		1		--------	Stores .reg8[7;1] into the byte of memory pointed to by .reg16[1;1]. `*(char*).reg16[1;1] = .reg8[7;1]`
+00100010................		ld (imm16),hl		3		16		1		--------	Stores .reg16[2;1] into the word of memory pointed to by .imm16[]. `*(int*).imm16[] = .reg16[2;1]`
+00110010................		ld (imm16),a		3		13		1		--------	Stores .reg8[7;1] into the byte of memory pointed to by .imm16[]. `*(char*).imm16[] = .reg8[7;1]`
+00001010				ld a,(bc)		1		7		1		--------	Loads the byte of memory pointed to by .reg16[0;1] into .reg8[7;1]. `.reg8[7;1] = *(char*).reg16[0;1]`
+00011010				ld a,(de)		1		7		1		--------	Loads the byte of memory pointed to by .reg16[1;1] into .reg8[7;1]. `.reg8[7;1] = *(char*).reg16[1;1]`
+00101010................		ld hl,(imm16)		3		16		1		--------	Loads the word of memory pointed to by .imm16[] into .reg16[2;1]. `.reg16[2;1] = *(int*).imm16[]`
+00111010................		ld a,(imm16)		3		13		1		--------	Loads the byte of memory pointed to by .imm16[] into .reg8[7;1]. `.reg8[7;1] = *(char*).imm16[]`
 
-00..0011				inc reg16		1		6		1		--------	Adds one to .reg16[].
-00..1011				dec reg16		1		6		1		--------	Subtracts one from .reg16[].
+00..0011				inc reg16		1		6		1		--------	Adds one to .reg16[]. `.reg16[]++`
+00..1011				dec reg16		1		6		1		--------	Subtracts one from .reg16[]. `.reg16[]--`
 
-00...100				inc reg8		1		4/11		1		SZ*H*VN-	Adds one to .reg8[].
+00...100				inc reg8		1		4/11		1		SZ*H*VN-	Adds one to .reg8[]. `.reg8[]++`
 
-00...101				dec reg8		1		4/11		1		SZ*H*VN-	Subtracts one from .reg8[].
+00...101				dec reg8		1		4/11		1		SZ*H*VN-	Subtracts one from .reg8[]. `.reg8[]--`
 
-00...110........			ld reg8,imm8		2		7/10		1		--------	Loads .imm8[] into .reg8[].
+00...110........			ld reg8,imm8		2		7/10		1		--------	Loads .imm8[] into .reg8[]. `.reg8[] = .imm8[]`
 
-00000111				rlca			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
-00001111				rrca			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
-00010111				rla			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
-00011111				rra			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
+00000111				rlca			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0. `.reg8[7;1] = .reg8[7;1] << 1 | (uint8_t).reg8[7;1] >> 7`
+00001111				rrca			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7. `.reg8[7;1] = (uint8_t).reg8[7;1] >> 1 | .reg8[7;1] << 7`
+00010111				rla			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0. `.reg8[7;1] = .reg8[7;1] << 1 | .f[3]`
+00011111				rra			1		4		1		--*0*-0C	The contents of .reg8[7;1] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7. `.reg8[7;1] = (uint8_t).reg8[7;1] >> 1 | .f[3] << 7`
 00100111				daa			1		4		1		SZ***P-*	Adjusts .reg8[7;1] for BCD addition and subtraction operations.
-00101111				cpl			1		4		1		--*1*-1-	The contents of .reg8[7;1] are inverted (one's complement).
-00110111				scf			1		4		1		--*0*-01	Sets .f[3].
-00111111				ccf			1		4		1		--***-0*	Inverts .f[3].
+00101111				cpl			1		4		1		--*1*-1-	The contents of .reg8[7;1] are inverted (one's complement). `.reg8[7;1] = ~.reg8[7;1]`
+00110111				scf			1		4		1		--*0*-01	Sets .f[3]. `.f[3] = 1`
+00111111				ccf			1		4		1		--***-0*	Inverts .f[3]. `.f[3] = ~.f[3]`
 
 01110110				halt			1		4		1		--------	Suspends CPU operation until an interrupt or reset occurs.
-01......				ld reg8,reg8		1		4/7		1		--------	The contents of the second .reg8[] are loaded into the first .reg8[].
+01......				ld reg8,reg8		1		4/7		1		--------	The contents of the second .reg8[] are loaded into the first .reg8[]. `.reg8[] = .reg8[]`
 
-10000...				add a,reg8		1		4/7		1		SZ*H*VNC	Adds .reg8[] to .reg8[7;1].
-10001...				adc a,reg8		1		4/7		1		SZ*H*VNC	Adds .reg8[] and .f[3] to .reg8[7;1].
-10010...				sub reg8		1		4/7		1		SZ*H*VNC	Subtracts .reg8[] from .reg8[7;1].
-10011...				sbc a,reg8		1		4/7		1		SZ*H*VNC	Subtracts .reg8[] and .f[3] from .reg8[7;1].	
-10100...				and reg8		1		4/7		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with .reg8[].
-10101...				xor reg8		1		4/7		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .reg8[].
-10110...				or reg8			1		4/7		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with .reg8[].
+10000...				add a,reg8		1		4/7		1		SZ*H*VNC	Adds .reg8[] to .reg8[7;1]. `.reg8[7;1] += .reg8[]`
+10001...				adc a,reg8		1		4/7		1		SZ*H*VNC	Adds .reg8[] and .f[3] to .reg8[7;1]. `.reg8[7;1] += .reg8[] + .f[3]`
+10010...				sub reg8		1		4/7		1		SZ*H*VNC	Subtracts .reg8[] from .reg8[7;1]. `.reg8[7;1] -= .reg8[]`
+10011...				sbc a,reg8		1		4/7		1		SZ*H*VNC	Subtracts .reg8[] and .f[3] from .reg8[7;1]. `.reg8[7;1] -= .reg8[] + .f[3]`
+10100...				and reg8		1		4/7		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with .reg8[]. `.reg8[7;1] &= .reg8[]`
+10101...				xor reg8		1		4/7		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .reg8[]. `.reg8[7;1] ^= .reg8[]`
+10110...				or reg8			1		4/7		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with .reg8[]. `.reg8[7;1] |= .reg8[]`
 10111...				cp reg8			1		4/7		1		SZ*H*VNC	Subtracts .reg8[] from .reg8[7;1] and affects flags according to the result. .reg8[7;1] is not modified.
 
-11...000				ret cc			1		11/5		1		--------	If condition .cc[] is true, the top stack entry is popped into .regpc[].
+11...000				ret cc			1		11/5		1		--------	If condition .cc[] is true, the top stack entry is popped into .regpc[]. `if (.cc[]) .regpc[] = *(*(int**)&.reg16[3;1])++`
 
-11..0001				pop reg16		1		10		1		--------	The word of memory pointed to by .reg16[3;1] is stored into .reg16[] and .reg16[3;1] is incremented by two.
-11001001				ret			1		10		1		--------	The top stack entry is popped into .regpc[].
-11011001				exx			1		4		1		--------	Exchanges the contents of .reg16af[0;1], .reg16af[1;1], and .reg16af[2;1] with .reg16sh[0;1], .reg16sh[1;1], and .reg16sh[2;1].
-11101001				jp (hl)			1		4		1		--------	Loads the value of .reg16[2;1] into .regpc[].
-11111001				ld sp,hl		1		6		1		--------	Loads the value of .reg16[2;1] into .reg16[3;1].
+11..0001				pop reg16af		1		10		1		--------	The word of memory pointed to by .reg16[3;1] is stored into .reg16af[] and .reg16[3;1] is incremented by two. `.reg16af[] = *(*(int**)&.reg16[3;1])++`
+11001001				ret			1		10		1		--------	The top stack entry is popped into .regpc[]. `.regpc[] = *(*(int**)&.reg16[3;1])++`
+11011001				exx			1		4		1		--------	Exchanges the contents of .reg16[0;1], .reg16[1;1], and .reg16[2;1] with .reg16sh[0;1], .reg16sh[1;1], and .reg16sh[2;1].
+11101001				jp (hl)			1		4		1		--------	Loads the value of .reg16[2;1] into .regpc[]. `.regpc[] = .reg16[2;1]`
+11111001				ld sp,hl		1		6		1		--------	Loads the value of .reg16[2;1] into .reg16[3;1]. `.reg16[3;1] = .reg16[2;1]`
 
-11...010................		jp cc,imm16		3		10		1		--------	If condition .cc[] is true, .imm16[] is copied to .regpc[].
+11...010................		jp cc,imm16		3		10		1		--------	If condition .cc[] is true, .imm16[] is copied to .regpc[]. `if (.cc[]) .regpc[] = .imm16[]`
 
-11000011................		jp imm16		3		10		1		--------	.imm16[] is copied to .regpc[].
+11000011................		jp imm16		3		10		1		--------	.imm16[] is copied to .regpc[]. `.regpc[] = .imm16[]`
 ;11001011				BIT INSTRUCTIONS
 11010011........			out (imm8),a		2		11		1		--------	Writes .reg8[7;1] to port .imm8[].
 11011011........			in a,(imm8)		2		11		1		--------	Reads a byte from port .imm8[] to .reg8[7;1].
@@ -70,43 +70,43 @@
 11110011				di			1		4		1		--------	Resets both interrupt flip-flops, thus preventing maskable interrupts from triggering.
 11111011				ei			1		4		1		--------	Sets both interrupt flip-flops, thus allowing maskable interrupts to occur. An interrupt will not occur until after the immediatedly following instruction.
 
-11...100................		call cc,imm16		3		17/10		1		--------	If condition .cc[] is true, the .regpc[] value after this instruction is pushed onto the stack, then is loaded with .imm16[].
+11...100................		call cc,imm16		3		17/10		1		--------	If condition .cc[] is true, the .regpc[] value after this instruction is pushed onto the stack, then is loaded with .imm16[]. `if (.cc[]) *--*(int**)&.reg16[3;1] = .regpc[], .regpc[] = .imm16[]`
 
-11..0101				push reg16		1		11		1		--------	.reg16[3;1] is decremented by two and .reg16[] is stored into the word of memory pointed to by .reg16[3;1].
-11001101................		call imm16		3		17		1		--------	The .regpc[] value after this instruction is pushed onto the stack, then is loaded with .imm16[].
+11..0101				push reg16af		1		11		1		--------	.reg16[3;1] is decremented by two and .reg16af[] is stored into the word of memory pointed to by .reg16[3;1]. `*--*(int**)&.reg16[3;1] = .reg16af[]`
+11001101................		call imm16		3		17		1		--------	The .regpc[] value after this instruction is pushed onto the stack, then is loaded with .imm16[]. `*--*(int**)&.reg16[3;1] = .regpc[], .regpc[] = .imm16[]`
 ;11011101				IX PRIMARY INSTRUCTIONS
 ;11101101				EXTENDED INSTRUCTIONS
 ;11111101				IY PRIMARY INSTRUCTIONS
 
-11000110........			add a,imm8		2		7		1		SZ*H*VNC	Adds .imm8[] to .reg8[7;1].
-11001110........			adc a,imm8		2		7		1		SZ*H*VNC	Adds .imm8[] and .f[3] to .reg8[7;1].
-11010110........			sub imm8		2		7		1		SZ*H*VNC	Subtracts .imm8[] from .reg8[7;1].
-11011110........			sbc a,imm8		2		7		1		SZ*H*VNC	Subtracts .imm8[] and .f[3] from .reg8[7;1].
-11100110........			and imm8		2		7		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with .imm8[].
-11101110........			xor imm8		2		7		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .imm8[].
-11110110........			or imm8			2		7		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with .imm8[].
+11000110........			add a,imm8		2		7		1		SZ*H*VNC	Adds .imm8[] to .reg8[7;1]. `.reg8[7;1] += .imm8[]`
+11001110........			adc a,imm8		2		7		1		SZ*H*VNC	Adds .imm8[] and .f[3] to .reg8[7;1]. `.reg8[7;1] += .imm8[] + .f[3]`
+11010110........			sub imm8		2		7		1		SZ*H*VNC	Subtracts .imm8[] from .reg8[7;1]. `.reg8[7;1] -= .imm8[]`
+11011110........			sbc a,imm8		2		7		1		SZ*H*VNC	Subtracts .imm8[] and .f[3] from .reg8[7;1]. `.reg8[7;1] -= .imm8[] + .f[3]`
+11100110........			and imm8		2		7		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with .imm8[]. `.reg8[7;1] &= .imm8[]`
+11101110........			xor imm8		2		7		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .imm8[]. `.reg8[7;1] ^= .imm8[]`
+11110110........			or imm8			2		7		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with .imm8[]. `.reg8[7;1] |= .imm8[]`
 11111110........			cp imm8			2		7		1		SZ*H*VNC	Subtracts .imm8[] from .reg8[7;1] and affects flags according to the result. .reg8[7;1] is not modified.
 
 11101111................		B_CALL(imm16)		3		*		1		*		*
-11...111				rst imm8		1		11		1		--------	The .regpc[] value after this instruction is pushed onto the stack, then is loaded with .dec2h[].
+11...111				rst imm8		1		11		1		--------	The .regpc[] value after this instruction is pushed onto the stack, then is loaded with .dec2h[]. `*--*(int**)&.reg16[3;1] = .regpc[], .regpc[] = .dec2h[]`
 
 
 ;BIT INSTRUCTIONS
 
-1100101100000...			rlc reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
-1100101100001...			rrc reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
-1100101100010...			rl reg8			2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
-1100101100011...			rr reg8			2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
-1100101100100...			sla reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
-1100101100101...			sra reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
-1100101100110...			sll reg8		2		8/15		0		SZ*0*P0C	The contents of .reg8[] are shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0.
-1100101100111...			srl reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
+1100101100000...			rlc reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0. `.reg8[7;1] = .reg8[7;1] << 1 | (uint8_t).reg8[7;1] >> 7`
+1100101100001...			rrc reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7. `.reg8[7;1] = (uint8_t).reg8[7;1] >> 1 | .reg8[7;1] << 7`
+1100101100010...			rl reg8			2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0. `.reg8[7;1] = .reg8[7;1] << 1 | .f[3]`
+1100101100011...			rr reg8			2		8/15		1		SZ*0*P0C	The contents of .reg8[] are rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7. `.reg8[7;1] = (uint8_t).reg8[7;1] >> 1 | .f[3] << 7`
+1100101100100...			sla reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0. `.reg8[7;1] = .reg8[7;1] << 1`
+1100101100101...			sra reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged. `.reg8[7;1] = (char).reg8[7;1] >> 1`
+1100101100110...			sll reg8		2		8/15		0		SZ*0*P0C	The contents of .reg8[] are shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0. `.reg8[7;1] = .reg8[7;1] << 1 | 1`
+1100101100111...			srl reg8		2		8/15		1		SZ*0*P0C	The contents of .reg8[] are shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7. `.reg8[7;1] = (uint8_t).reg8[7;1] >> 1`
 
 1100101101......			bit imm3,reg8		2		8/12		1		*Z*1**0-	Tests bit .imm3[] of .reg8[].
 
-1100101110......			res imm3,reg8		2		8/15		1		--------	Resets bit .imm3[] of .reg8[].
+1100101110......			res imm3,reg8		2		8/15		1		--------	Resets bit .imm3[] of .reg8[]. `.reg8[] &= ~(1 << .imm3[])`
 
-1100101111......			set imm3,reg8		2		8/15		1		--------	Sets bit .imm3[] of .reg8[].
+1100101111......			set imm3,reg8		2		8/15		1		--------	Sets bit .imm3[] of .reg8[]. `.reg8[] |= 1 << .imm3[]`
 
 
 ;EXTENDED INSTRUCTIONS
@@ -117,20 +117,20 @@
 1110110101110001			out (c),0		2		12		0		--------	Writes a zero byte to port .reg8[1;1].
 1110110101...001			out (c),reg8		2		12		1		--------	Writes .reg8[] to port .reg8[1;1].
 
-1110110101..0010			sbc hl,reg16		2		15		1		SZ*H*VNC	Subtracts .reg16[] and .f[3] from .reg16[2;1].
-1110110101..1010			adc hl,reg16		2		15		1		SZ*H*VNC	Adds .reg16[] and .f[3] to .reg16[2;1].
+1110110101..0010			sbc hl,reg16		2		15		1		SZ*H*VNC	Subtracts .reg16[] and .f[3] from .reg16[2;1]. `.reg16[2;1] -= .reg16[] + .f[3]`
+1110110101..1010			adc hl,reg16		2		15		1		SZ*H*VNC	Adds .reg16[] and .f[3] to .reg16[2;1]. `.reg16[2;1] += .reg16[] + .f[3]`
 
-1110110101100011................	ld (imm16),hl		4		20		0		--------	Stores .reg16[2;1] into the word of memory pointed to by .imm16[].
-1110110101..0011................	ld (imm16),reg16	4		20		1		--------	Stores .reg16[] into the word of memory pointed to by .imm16[].
-1110110101101011................	ld hl,(imm16)		4		20		0		--------	Loads the word of memory pointed to by .imm16[] into .reg16[2;1].
-1110110101..1011................	ld reg16,(imm16)	4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .reg16[].
+1110110101100011................	ld (imm16),hl		4		20		0		--------	Stores .reg16[2;1] into the word of memory pointed to by .imm16[]. `*(int*).imm16[] = .reg16[2;1]`
+1110110101..0011................	ld (imm16),reg16	4		20		1		--------	Stores .reg16[] into the word of memory pointed to by .imm16[]. `*(int*).imm16[] = .reg16[]`
+1110110101101011................	ld hl,(imm16)		4		20		0		--------	Loads the word of memory pointed to by .imm16[] into .reg16[2;1]. `.reg16[2;1] = *(int*).imm16[]`
+1110110101..1011................	ld reg16,(imm16)	4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .reg16[]. `.reg16[] = *(int*).imm16[]`
 
-1110110101000100			neg			2		8		1		SZ*H*VNC	The contents of .reg8[7;1] are negated (two's complement). Operation is the same as subtracting .reg8[7;1] from zero.
-1110110101...100			neg			2		8		0		SZ*H*VNC	The contents of .reg8[7;1] are negated (two's complement). Operation is the same as subtracting .reg8[7;1] from zero.
+1110110101000100			neg			2		8		1		SZ*H*VNC	The contents of .reg8[7;1] are negated (two's complement). Operation is the same as subtracting .reg8[7;1] from zero. `.reg8[7;1] = -.reg8[7;1]`
+1110110101...100			neg			2		8		0		SZ*H*VNC	The contents of .reg8[7;1] are negated (two's complement). Operation is the same as subtracting .reg8[7;1] from zero. `.reg8[7;1] = -.reg8[7;1]`
 
-1110110101001101			reti			2		14		1		--------	Used at the end of a maskable interrupt service routine. The top stack entry is popped into .regpc[], and signals an I/O device that the interrupt has finished, allowing nested interrupts (not a consideration on the TI).
-1110110101000101			retn			2		14		1		--------	Used at the end of a non-maskable interrupt service routine (located at .imm16[h;0066;1]) to pop the top stack entry into PC. The value of .iff2[] is copied to .iff1[] so that maskable interrupts are allowed to continue as before. NMIs are not enabled on the TI.
-1110110101...101			retn			2		14		0		--------	Used at the end of a non-maskable interrupt service routine (located at .imm16[h;0066;1]) to pop the top stack entry into PC. The value of .iff2[] is copied to .iff1[] so that maskable interrupts are allowed to continue as before. NMIs are not enabled on the TI.
+1110110101001101			reti			2		14		1		--------	Used at the end of a maskable interrupt service routine. The top stack entry is popped into .regpc[], and signals an I/O device that the interrupt has finished, allowing nested interrupts (not a consideration on the TI). `.regpc[] = *(*(int**)&.reg16[3;1])++`
+1110110101000101			retn			2		14		1		--------	Used at the end of a non-maskable interrupt service routine (located at .imm16[h;0066;1]) to pop the top stack entry into .regpc[]. The value of .iff2[] is copied to .iff1[] so that maskable interrupts are allowed to continue as before. NMIs are not enabled on the TI. `.iff1[] = .iff2[], .regpc[] = *(*(int**)&.reg16[3;1])++`
+1110110101...101			retn			2		14		0		--------	Used at the end of a non-maskable interrupt service routine (located at .imm16[h;0066;1]) to pop the top stack entry into .regpc[]. The value of .iff2[] is copied to .iff1[] so that maskable interrupts are allowed to continue as before. NMIs are not enabled on the TI. `.iff1[] = .iff2[], .regpc[] = *(*(int**)&.reg16[3;1])++`
 
 1110110101000110			im 0			2		8		1		--------	Sets interrupt mode 0.
 1110110101001110			im 0/1			2		8		0		--------	Sets undefined interrupt mode 0/1.
@@ -141,22 +141,22 @@
 1110110101110110			im 1			2		8		0		--------	Sets interrupt mode 1.
 1110110101111110			im 2			2		8		0		--------	Sets interrupt mode 2.
 
-1110110101000111			ld i,a			2		9		1		--------	Stores the value of .reg8[7;1] into .reg8ir[0;1].
-1110110101001111			ld r,a			2		9		1		--------	Stores the value of .reg8[7;1] into .reg8ir[1;1].
-1110110101010111			ld a,i			2		9		1		SZ*0**0-	Stores the value of .reg8ir[0;1] into .reg8[7;1].
-1110110101011111			ld a,r			2		9		1		SZ*0**0-	Stores the value of .reg8ir[1;1] into .reg8[7;1].
+1110110101000111			ld i,a			2		9		1		--------	Stores the value of .reg8[7;1] into .reg8ir[0;1]. `.reg8ir[0;1] = .reg8[7;1]`
+1110110101001111			ld r,a			2		9		1		--------	Stores the value of .reg8[7;1] into .reg8ir[1;1]. `.reg8ir[1;1] = .reg8[7;1]`
+1110110101010111			ld a,i			2		9		1		SZ*0**0-	Stores the value of .reg8ir[0;1] into .reg8[7;1]. `.reg8[7;1] = .reg8ir[0;1]`
+1110110101011111			ld a,r			2		9		1		SZ*0**0-	Stores the value of .reg8ir[1;1] into .reg8[7;1]. `.reg8[7;1] = .reg8ir[1;1]`
 1110110101100111			rrd			2		18		1		SZ*0*P0-	The contents of the low-order nibble of .reg8[6;1] are copied to the low-order nibble of .reg8[7;1]. The previous contents are copied to the high-order nibble of .reg8[6;1]. The previous contents are copied to the low-order nibble of .reg8[6;1].
 1110110101101111			rld			2		18		1		SZ*0*P0-	The contents of the low-order nibble of .reg8[6;1] are copied to the high-order nibble of .reg8[6;1]. The previous contents are copied to the low-order nibble of .reg8[7;1]. The previous contents are copied to the low-order nibble of .reg8[6;1].
 
-1110110110100000			ldi			2		16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1] and .reg16[1;1] are incremented and .reg16[0;1] is decremented.
-1110110110101000			ldd			2		16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1], .reg16[1;1], and .reg16[0;1] are decremented.
-1110110110110000			ldir			2		21/16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1] and .reg16[1;1] are incremented and .reg16[0;1] is decremented. If .reg16[0;1] is not zero, this operation is repeated. Interrupts can trigger between repetitions.
-1110110110111000			lddr			2		21/16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1], .reg16[1;1], and .reg16[0;1] are decremented. If .reg16[0;1] is not zero, this operation is repeated. Interrupts can trigger between repetitions.
+1110110110100000			ldi			2		16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1] and .reg16[1;1] are incremented and .reg16[0;1] is decremented. `*(char*).reg16[1;1]++ = *(char*).reg16[2;1]++, --.reg16[0;1]`
+1110110110101000			ldd			2		16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1], .reg16[1;1], and .reg16[0;1] are decremented. `*(char*).reg16[1;1]-- = *(char*).reg16[2;1]--, --.reg16[0;1]`
+1110110110110000			ldir			2		21/16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1] and .reg16[1;1] are incremented and .reg16[0;1] is decremented. If .reg16[0;1] is not zero, this operation is repeated. Interrupts can trigger between repetitions. `while (*(char*).reg16[1;1]++ = *(char*).reg16[2;1]++, --.reg16[0;1])`
+1110110110111000			lddr			2		21/16		1		--*0**0-	Transfers the byte of memory pointed to by .reg16[2;1] to the memory location pointed to by .reg16[1;1]. Then .reg16[2;1], .reg16[1;1], and .reg16[0;1] are decremented. If .reg16[0;1] is not zero, this operation is repeated. Interrupts can trigger between repetitions. `while (*(char*).reg16[1;1]-- = *(char*).reg16[2;1]--, --.reg16[0;1])`
 
 1110110110100001			cpi			2		16		1		SZ*H**1-	Compares the byte of memory pointed to by .reg16[2;1] with .reg8[7;1]. Then .reg16[2;1] is incremented and .reg16[0;1] is decremented.
 1110110110101001			cpd			2		16		1		SZ*H**1-	Compares the byte of memory pointed to by .reg16[2;1] with .reg8[7;1]. Then .reg16[2;1] and .reg16[0;1] are decremented.
-1110110110110001			cpir			2		21/16		1		SZ*H**1-	Compares the byte of memory pointed to by .reg16[2;1] with .reg8[7;1]. Then .reg16[2;1] is incremented and .reg16[0;1] is decremented. If .reg16[0;1] is not zero and .cc[1;1] is not set, this operation is repeated. Interrupts can trigger between repetitions.
-1110110110111001			cpdr			2		21/16		1		SZ*H**1-	Compares the byte of memory pointed to by .reg16[2;1] with .reg8[7;1]. Then .reg16[2;1] and .reg16[0;1] are decremented. If .reg16[0;1] is not zero and .cc[1;1] is not set, this operation is repeated. Interrupts can trigger between repetitions.
+1110110110110001			cpir			2		21/16		1		SZ*H**1-	Compares the byte of memory pointed to by .reg16[2;1] with .reg8[7;1]. Then .reg16[2;1] is incremented and .reg16[0;1] is decremented. If .reg16[0;1] is not zero and .f[1] is not set, this operation is repeated. Interrupts can trigger between repetitions.
+1110110110111001			cpdr			2		21/16		1		SZ*H**1-	Compares the byte of memory pointed to by .reg16[2;1] with .reg8[7;1]. Then .reg16[2;1] and .reg16[0;1] are decremented. If .reg16[0;1] is not zero and .f[1] is not set, this operation is repeated. Interrupts can trigger between repetitions.
 
 1110110110100010			ini			2		16		1		********	A byte from port .reg8[1;1] is written to the memory location pointed to by .reg16[2;1]. Then .reg16[2;1] is incremented and .reg8[0;1] is decremented.
 1110110110101010			ind			2		16		1		********	A byte from port .reg8[1;1] is written to the memory location pointed to by .reg16[2;1]. Then .reg16[2;1] and .reg8[0;1] are decremented.
@@ -173,54 +173,54 @@
 
 ;IX PRIMARY INSTRUCTIONS
 
-1101110100..1001			add ix,reg16		2		15		1		--*H*-NC	The value of .reg16[] is added to .regi[].
-1101110100100001................	ld ix,imm16		4		14		1		--------	Loads .imm16[] into .regi[].
+1101110100..1001			add ix,reg16		2		15		1		--*H*-NC	The value of .reg16[] is added to .regi[]. `.regi[] += .reg16[]`
+1101110100100001................	ld ix,imm16		4		14		1		--------	Loads .imm16[] into .regi[]. `.regi[] = .imm16[]`
 
-1101110100100010................	ld (imm16),ix		4		20		1		--------	Stores .regi[] into the word of memory pointed to by .imm16[].
-1101110100101010................	ld ix,(imm16)		4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .regi[].
+1101110100100010................	ld (imm16),ix		4		20		1		--------	Stores .regi[] into the word of memory pointed to by .imm16[]. `*(int*).imm16[] = .regi[]`
+1101110100101010................	ld ix,(imm16)		4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .regi[]. `.regi[] = *(int*).imm16[]`
 
-1101110100100011			inc ix			2		10		1		--------	Adds one to .regi[].
-1101110100101011			dec ix			2		10		1		--------	Subtracts one from .regi[].
+1101110100100011			inc ix			2		10		1		--------	Adds one to .regi[]. `.regi[]++`
+1101110100101011			dec ix			2		10		1		--------	Subtracts one from .regi[]. `.regi[]--`
 
-110111010010.100			inc reg8index		2		8		0		SZ*H*VN-	Adds one to .regi8[].
-1101110100110100........		inc (ix+ofs8)		3		23		1		SZ*H*VN-	Adds one to the byte of memory pointed to by .regi[] plus .ofs8[].
+110111010010.100			inc reg8index		2		8		0		SZ*H*VN-	Adds one to .regi8[]. `.regi8[]++`
+1101110100110100........		inc (ix+ofs8)		3		23		1		SZ*H*VN-	Adds one to the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[])++`
 
-110111010010.101			dec reg8index		2		8		0		SZ*H*VN-	Subtracts one from .regi8[].
-1101110100110101........		dec (ix+ofs8)		3		23		1		SZ*H*VN-	Subtracts one from the byte of memory pointed to by .regi[] plus .ofs8[].
+110111010010.101			dec reg8index		2		8		0		SZ*H*VN-	Subtracts one from .regi8[]. `.regi8[]--`
+1101110100110101........		dec (ix+ofs8)		3		23		1		SZ*H*VN-	Subtracts one from the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[])--`
 
-110111010010.110........		ld reg8index,imm8	3		11		0		--------	Loads .imm8[] into .regi8[].
-1101110100110110................	ld (ix+ofs8),imm8	4		19		1		--------	Stores .imm8[] to the byte of memory pointed to by .regi[] plus .ofs8[].
+110111010010.110........		ld reg8index,imm8	3		11		0		--------	Loads .imm8[] into .regi8[]. `.regi8[] = .imm8[]`
+1101110100110110................	ld (ix+ofs8),imm8	4		19		1		--------	Stores .imm8[] to the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[]) = .imm8[]`
 
-1101110101...110........		ld reg8,(ix+ofs8)	3		19		1		--------	Loads the byte of memory pointed to by .regi[] plus .ofs8[] into .reg8[].
-1101110101110...........		ld (ix+ofs8),reg8	3		19		1		--------	Stores .reg8[] to the byte of memory pointed to by .regi[] plus .ofs8[].
-1101110101...10.			ld reg8,reg8index	2		8		0		--------	The contents of .regi8[] are loaded into .reg8[].
-110111010110....			ld reg8index,reg8	2		8		0		--------	The contents of .reg8[] are loaded into .regi8[].
+1101110101...110........		ld reg8,(ix+ofs8)	3		19		1		--------	Loads the byte of memory pointed to by .regi[] plus .ofs8[] into .reg8[]. `.reg8[] = *(char*)(.regi[] + .ofs8[])`
+1101110101110...........		ld (ix+ofs8),reg8	3		19		1		--------	Stores .reg8[] to the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[]) = .reg8[]`
+1101110101...10.			ld reg8,reg8index	2		8		0		--------	The contents of .regi8[] are loaded into .reg8[]. `.reg8[] = .regi8[]`
+110111010110....			ld reg8index,reg8	2		8		0		--------	The contents of .reg8[] are loaded into .regi8[]. `.regi8[] = .reg8[]`
 
-110111011000010.			add a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] to .reg8[7;1].
-1101110110000110........		add a,(ix+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] to .reg8[7;1].
-110111011000110.			adc a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] and .f[3] to .reg8[7;1].
-1101110110001110........		adc a,(ix+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] to .reg8[7;1].
-110111011001010.			sub reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] from .reg8[7;1].
-1101110110010110........		sub (ix+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1].
-110111011001110.			sbc a,reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] and .f[3] from .reg8[7;1].
-1101110110011110........		sbc a,(ix+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] from .reg8[7;1].
-110111011010010.			and reg8index		2		8		0		SZ*1*P00	Bitwise AND on .reg8[7;1] with .regi8[].
-1101110110100110........		and (ix+ofs8)		3		19		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
-110111011010110.			xor reg8index		2		8		0		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .regi8[].
-1101110110101110........		xor (ix+ofs8)		3		19		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
-110111011011010.			or reg8index		2		8		0		SZ*0*P00	Bitwise OR on .reg8[7;1] with .regi8[].
-1101110110110110........		or (ix+ofs8)		3		19		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
+110111011000010.			add a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] to .reg8[7;1]. `.reg8[7;1] += .regi8[]`
+1101110110000110........		add a,(ix+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] to .reg8[7;1]. `.reg8[7;1] += *(char*)(.regi[] + .ofs8[])`
+110111011000110.			adc a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] and .f[3] to .reg8[7;1]. `.reg8[7;1] += .regi8[] + .f[3]`
+1101110110001110........		adc a,(ix+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] to .reg8[7;1]. `.reg8[7;1] += *(char*)(.regi[] + .ofs8[]) + .f[3]`
+110111011001010.			sub reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] from .reg8[7;1]. `.reg8[7;1] -= .regi8[]`
+1101110110010110........		sub (ix+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1]. `.reg8[7;1] -= *(char*)(.regi[] + .ofs8[])`
+110111011001110.			sbc a,reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] and .f[3] from .reg8[7;1]. `.reg8[7;1] -= .regi8[] + .f[3]`
+1101110110011110........		sbc a,(ix+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] from .reg8[7;1]. `.reg8[7;1] -= *(char*)(.regi[] + .ofs8[]) + .f[3]`
+110111011010010.			and reg8index		2		8		0		SZ*1*P00	Bitwise AND on .reg8[7;1] with .regi8[]. `.reg8[7;1] &= .regi8[]`
+1101110110100110........		and (ix+ofs8)		3		19		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[]. `.reg8[7;1] &= *(char*)(.regi[] + .ofs8[])`
+110111011010110.			xor reg8index		2		8		0		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .regi8[]. `.reg8[7;1] ^= .regi8[]`
+1101110110101110........		xor (ix+ofs8)		3		19		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[]. `.reg8[7;1] ^= *(char*)(.regi[] + .ofs8[])`
+110111011011010.			or reg8index		2		8		0		SZ*0*P00	Bitwise OR on .reg8[7;1] with .regi8[]. `.reg8[7;1] |= .regi8[]`
+1101110110110110........		or (ix+ofs8)		3		19		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[]. `.reg8[7;1] |= *(char*)(.regi[] + .ofs8[])`
 110111011011110.			cp reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] from .reg8[7;1] and affects flags according to the result. .reg8[7;1] is not modified.
 1101110110111110........		cp (ix+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1] and affects flags according to the result. .reg8[7;1] is not modified.
 
-1101110111100001			pop ix			2		14		1		--------	The word of memory pointed to by .reg16[3;1] is stored into .regi[] and .reg16[3;1] is incremented by two.
-1101110111101001			jp (ix)			2		8		1		--------	Loads the value of .regi[] into .regpc[].
-1101110111111001			ld sp,ix		2		10		1		--------	Loads the value of .regi[] into .reg16[3;1].
+1101110111100001			pop ix			2		14		1		--------	The word of memory pointed to by .reg16[3;1] is stored into .regi[] and .reg16[3;1] is incremented by two. `*.regi[] = *(*(int**)&.reg16[3;1])++`
+1101110111101001			jp (ix)			2		8		1		--------	Loads the value of .regi[] into .regpc[]. `.regpc[] = .regi[]`
+1101110111111001			ld sp,ix		2		10		1		--------	Loads the value of .regi[] into .reg16[3;1]. `.reg16[3;1] = .regi[]`
 
 ;1101110111001011			IX BIT INSTRUCTIONS
 1101110111100011			ex (sp),ix		2		23		1		--------	Exchanges the word of memory pointed to by .reg16[3;1] with .regi[].
 
-1101110111100101			push ix			2		15		1		--------	.reg16[3;1] is decremented by two and .regi[] is stored into the word of memory pointed to by .reg16[3;1].
+1101110111100101			push ix			2		15		1		--------	.reg16[3;1] is decremented by two and .regi[] is stored into the word of memory pointed to by .reg16[3;1]. `*--*(int**)&.reg16[3;1] = .regi[]`
 
 
 ;IX BIT INSTRUCTIONS
@@ -254,54 +254,54 @@
 
 ;IY PRIMARY INSTRUCTIONS
 
-1111110100..1001			add iy,reg16		2		15		1		--*H*-NC	The value of .reg16[] is added to .regi[].
-1111110100100001................	ld iy,imm16		4		14		1		--------	Loads .imm16[] into .regi[].
+1111110100..1001			add iy,reg16		2		15		1		--*H*-NC	The value of .reg16[] is added to .regi[]. `.regi[] += .reg16[]`
+1111110100100001................	ld iy,imm16		4		14		1		--------	Loads .imm16[] into .regi[]. `.regi[] = .imm16[]`
 
-1111110100100010................	ld (imm16),iy		4		20		1		--------	Stores .regi[] into the word of memory pointed to by .imm16[].
-1111110100101010................	ld iy,(imm16)		4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .regi[].
+1111110100100010................	ld (imm16),iy		4		20		1		--------	Stores .regi[] into the word of memory pointed to by .imm16[]. `*(int*).imm16[] = .regi[]`
+1111110100101010................	ld iy,(imm16)		4		20		1		--------	Loads the word of memory pointed to by .imm16[] into .regi[]. `.regi[] = *(int*).imm16[]`
 
-1111110100100011			inc iy			2		10		1		--------	Adds one to .regi[].
-1111110100101011			dec iy			2		10		1		--------	Subtracts one from .regi[].
+1111110100100011			inc iy			2		10		1		--------	Adds one to .regi[]. `.regi[]++`
+1111110100101011			dec iy			2		10		1		--------	Subtracts one from .regi[]. `.regi[]--`
 
-111111010010.100			inc reg8index		2		8		0		SZ*H*VN-	Adds one to .regi8[].
-1111110100110100........		inc (iy+ofs8)		3		23		1		SZ*H*VN-	Adds one to the byte of memory pointed to by .regi[] plus .ofs8[].
+111111010010.100			inc reg8index		2		8		0		SZ*H*VN-	Adds one to .regi8[]. `.regi8[]++`
+1111110100110100........		inc (iy+ofs8)		3		23		1		SZ*H*VN-	Adds one to the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[])++`
 
-111111010010.101			dec reg8index		2		8		0		SZ*H*VN-	Subtracts one from .regi8[].
-1111110100110101........		dec (iy+ofs8)		3		23		1		SZ*H*VN-	Subtracts one from the byte of memory pointed to by .regi[] plus .ofs8[].
+111111010010.101			dec reg8index		2		8		0		SZ*H*VN-	Subtracts one from .regi8[]. `.regi8[]--`
+1111110100110101........		dec (iy+ofs8)		3		23		1		SZ*H*VN-	Subtracts one from the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[])--`
 
-111111010010.110........		ld reg8index,imm8	3		11		0		--------	Loads .imm8[] into .regi8[].
-1111110100110110................	ld (iy+ofs8),imm8	4		19		1		--------	Stores .imm8[] to the byte of memory pointed to by .regi[] plus .ofs8[].
+111111010010.110........		ld reg8index,imm8	3		11		0		--------	Loads .imm8[] into .regi8[]. `.regi8[] = .imm8[]`
+1111110100110110................	ld (iy+ofs8),imm8	4		19		1		--------	Stores .imm8[] to the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[]) = .imm8[]`
 
-1111110101...110........		ld reg8,(iy+ofs8)	3		19		1		--------	Loads the byte of memory pointed to by .regi[] plus .ofs8[] into .reg8[].
-1111110101110...........		ld (iy+ofs8),reg8	3		19		1		--------	Stores .reg8[] to the byte of memory pointed to by .regi[] plus .ofs8[].
-1111110101...10.			ld reg8,reg8index	2		8		0		--------	The contents of .regi8[] are loaded into .reg8[].
-111111010110....			ld reg8index,reg8	2		8		0		--------	The contents of .reg8[] are loaded into .regi8[].
+1111110101...110........		ld reg8,(iy+ofs8)	3		19		1		--------	Loads the byte of memory pointed to by .regi[] plus .ofs8[] into .reg8[]. `.reg8[] = *(char*)(.regi[] + .ofs8[])`
+1111110101110...........		ld (iy+ofs8),reg8	3		19		1		--------	Stores .reg8[] to the byte of memory pointed to by .regi[] plus .ofs8[]. `*(char*)(.regi[] + .ofs8[]) = .reg8[]`
+1111110101...10.			ld reg8,reg8index	2		8		0		--------	The contents of .regi8[] are loaded into .reg8[]. `.reg8[] = .regi8[]`
+111111010110....			ld reg8index,reg8	2		8		0		--------	The contents of .reg8[] are loaded into .regi8[]. `.regi8[] = .reg8[]`
 
-111111011000010.			add a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] to .reg8[7;1].
-1111110110000110........		add a,(iy+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] to .reg8[7;1].
-111111011000110.			adc a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] and .f[3] to .reg8[7;1].
-1111110110001110........		adc a,(iy+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] to .reg8[7;1].
-111111011001010.			sub reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] from .reg8[7;1].
-1111110110010110........		sub (iy+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1].
-111111011001110.			sbc a,reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] and .f[3] from .reg8[7;1].
-1111110110011110........		sbc a,(iy+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] from .reg8[7;1].
-111111011010010.			and reg8index		2		8		0		SZ*1*P00	Bitwise AND on .reg8[7;1] with .regi8[].
-1111110110100110........		and (iy+ofs8)		3		19		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
-111111011010110.			xor reg8index		2		8		0		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .regi8[].
-1111110110101110........		xor (iy+ofs8)		3		19		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
-111111011011010.			or reg8index		2		8		0		SZ*0*P00	Bitwise OR on .reg8[7;1] with .regi8[].
-1111110110110110........		or (iy+ofs8)		3		19		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[].
+111111011000010.			add a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] to .reg8[7;1]. `.reg8[7;1] += .regi8[]`
+1111110110000110........		add a,(iy+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] to .reg8[7;1]. `.reg8[7;1] += *(char*)(.regi[] + .ofs8[])`
+111111011000110.			adc a,reg8index		2		8		0		SZ*H*VNC	Adds .regi8[] and .f[3] to .reg8[7;1]. `.reg8[7;1] += .regi8[] + .f[3]`
+1111110110001110........		adc a,(iy+ofs8)		3		19		1		SZ*H*VNC	Adds the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] to .reg8[7;1]. `.reg8[7;1] += *(char*)(.regi[] + .ofs8[]) + .f[3]`
+111111011001010.			sub reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] from .reg8[7;1]. `.reg8[7;1] -= .regi8[]`
+1111110110010110........		sub (iy+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1]. `.reg8[7;1] -= *(char*)(.regi[] + .ofs8[])`
+111111011001110.			sbc a,reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] and .f[3] from .reg8[7;1]. `.reg8[7;1] -= .regi8[] + .f[3]`
+1111110110011110........		sbc a,(iy+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] and .f[3] from .reg8[7;1]. `.reg8[7;1] -= *(char*)(.regi[] + .ofs8[]) + .f[3]`
+111111011010010.			and reg8index		2		8		0		SZ*1*P00	Bitwise AND on .reg8[7;1] with .regi8[]. `.reg8[7;1] &= .regi8[]`
+1111110110100110........		and (iy+ofs8)		3		19		1		SZ*1*P00	Bitwise AND on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[]. `.reg8[7;1] &= *(char*)(.regi[] + .ofs8[])`
+111111011010110.			xor reg8index		2		8		0		SZ*0*P00	Bitwise XOR on .reg8[7;1] with .regi8[]. `.reg8[7;1] ^= .regi8[]`
+1111110110101110........		xor (iy+ofs8)		3		19		1		SZ*0*P00	Bitwise XOR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[]. `.reg8[7;1] ^= *(char*)(.regi[] + .ofs8[])`
+111111011011010.			or reg8index		2		8		0		SZ*0*P00	Bitwise OR on .reg8[7;1] with .regi8[]. `.reg8[7;1] |= .regi8[]`
+1111110110110110........		or (iy+ofs8)		3		19		1		SZ*0*P00	Bitwise OR on .reg8[7;1] with the byte of memory pointed to by .regi[] plus .ofs8[]. `.reg8[7;1] |= *(char*)(.regi[] + .ofs8[])`
 111111011011110.			cp reg8index		2		8		0		SZ*H*VNC	Subtracts .regi8[] from .reg8[7;1] and affects flags according to the result. .reg8[7;1] is not modified.
 1111110110111110........		cp (iy+ofs8)		3		19		1		SZ*H*VNC	Subtracts the byte of memory pointed to by .regi[] plus .ofs8[] from .reg8[7;1] and affects flags according to the result. .reg8[7;1] is not modified.
 
-1111110111100001			pop iy			2		14		1		--------	The word of memory pointed to by .reg16[3;1] is stored into .regi[] and .reg16[3;1] is incremented by two.
-1111110111101001			jp (iy)			2		8		1		--------	Loads the value of .regi[] into .regpc[].
-1111110111111001			ld sp,iy		2		10		1		--------	Loads the value of .regi[] into .reg16[3;1].
+1111110111100001			pop iy			2		14		1		--------	The word of memory pointed to by .reg16[3;1] is stored into .regi[] and .reg16[3;1] is incremented by two. `*.regi[] = *(*(int**)&.reg16[3;1])++`
+1111110111101001			jp (iy)			2		8		1		--------	Loads the value of .regi[] into .regpc[]. `.regpc[] = .regi[]`
+1111110111111001			ld sp,iy		2		10		1		--------	Loads the value of .regi[] into .reg16[3;1]. `.reg16[3;1] = .regi[]`
 
 ;1101110111001011			IY BIT INSTRUCTIONS
 1111110111100011			ex (sp),iy		2		23		1		--------	Exchanges the word of memory pointed to by .reg16[3;1] with .regi[].
 
-1111110111100101			push iy			2		15		1		--------	.reg16[3;1] is decremented by two and .regi[] is stored into the word of memory pointed to by .reg16[3;1].
+1111110111100101			push iy			2		15		1		--------	.reg16[3;1] is decremented by two and .regi[] is stored into the word of memory pointed to by .reg16[3;1]. `*--*(int**)&.reg16[3;1] = .regi[]`
 
 
 ;IY BIT INSTRUCTIONS
