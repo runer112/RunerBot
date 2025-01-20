@@ -25,10 +25,10 @@
 00..1011				dec reg24		1		1F				--------	Subtracts one from .reg24[]. `.reg24[]--`
 
 00110100				inc (hl)		1		1F+1R+1W+1			SZ-H-VN-	Adds one to .reg8[6]. `*(char*).reg24[2;1]++`
-00...100				inc reg8		1		1F				SZ-H-VN-	Adds one to .reg8[]. `*.reg8[]++`
+00...100				inc reg8		1		1F				SZ-H-VN-	Adds one to .reg8[]. `.reg8[]++`
 
 00110101				dec (hl)		1		1F+1R+1W+1			SZ-H-VN-	Subtracts one from .reg8[6]. `*(char*).reg24[2;1]--`
-00...101				dec reg8		1		1F				SZ-H-VN-	Subtracts one from .reg8[]. `*.reg8[]--`
+00...101				dec reg8		1		1F				SZ-H-VN-	Subtracts one from .reg8[]. `.reg8[]--`
 
 00110110........			ld (hl),imm8		2		2F+1W				--------	Loads .imm8[] into .reg8[6]. `*(char*).reg24[2;1] = .imm8[]`
 00...110........			ld reg8,imm8		2		2F				--------	Loads .imm8[] into .reg8[]. `*.reg8[] = .imm8[]`
