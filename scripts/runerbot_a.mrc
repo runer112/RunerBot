@@ -13,8 +13,8 @@
     runerbot.reload
     halt
   }
-  if $regex(%query,/^git\s+(fetch|pull|checkout\s+[\w/-]+)$/i) {
-    run -n cmd /c cd " $+ $scriptdir.." && %query || pause
+  if $regex(%query,/^(|git\s+)(fetch|pull|checkout\s+[\w/-]+)$/i) {
+    run -n cmd /c cd " $+ $scriptdir.." && git $regml(2) || pause
     halt
   }
 }
