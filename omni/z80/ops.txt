@@ -171,6 +171,35 @@
 11101101........			noni \ nop		2		8		0		--------	No operation is performed.
 
 
+;IX BIT INSTRUCTIONS
+
+1101110111001011........00000110	rlc (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
+1101110111001011........00000...	rlc (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0. The result is then loaded into .reg8[].
+1101110111001011........00001110	rrc (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
+1101110111001011........00001...	rrc (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7. The result is then loaded into .reg8[].
+1101110111001011........00010110	rl (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
+1101110111001011........00010...	rl (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0. The result is then loaded into .reg8[].
+1101110111001011........00011110	rr (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
+1101110111001011........00011...	rr (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7. The result is then loaded into .reg8[].
+1101110111001011........00100110	sla (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
+1101110111001011........00100...	sla (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0. The result is then loaded into .reg8[].
+1101110111001011........00101110	sra (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
+1101110111001011........00101...	sra (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged. The result is then loaded into .reg8[].
+1101110111001011........00110110	sll (ix+ofs8)		4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0.
+1101110111001011........00110...	sll (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0. The result is then loaded into .reg8[].
+1101110111001011........00111110	srl (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
+1101110111001011........00111...	srl (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7. The result is then loaded into .reg8[].
+
+1101110111001011........01...110	bit imm3,(ix+ofs8)	4		20		1		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+1101110111001011........01......	bit imm3,(ix+ofs8)	4		20		0		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+
+1101110111001011........10...110	res imm3,(ix+ofs8)	4		23		1		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+1101110111001011........10......	res imm3,(ix+ofs8),reg8	4		23		0		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
+
+1101110111001011........11...110	set imm3,(ix+ofs8)	4		23		1		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+1101110111001011........11......	set imm3,(ix+ofs8),reg8	4		23		0		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
+
+
 ;IX PRIMARY INSTRUCTIONS
 
 1101110100..1001			add ix,reg16		2		15		1		--*H*-NC	The value of .reg16[] is added to .regi[]. `.regi[] += .reg16[]`
@@ -223,33 +252,33 @@
 1101110111100101			push ix			2		15		1		--------	.reg16[3;1] is decremented by two and .regi[] is stored into the word of memory pointed to by .reg16[3;1]. `*--*(int**)&.reg16[3;1] = .regi[]`
 
 
-;IX BIT INSTRUCTIONS
+;IY BIT INSTRUCTIONS
 
-1101110111001011........00000110	rlc (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
-1101110111001011........00000...	rlc (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0. The result is then loaded into .reg8[].
-1101110111001011........00001110	rrc (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
-1101110111001011........00001...	rrc (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7. The result is then loaded into .reg8[].
-1101110111001011........00010110	rl (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
-1101110111001011........00010...	rl (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0. The result is then loaded into .reg8[].
-1101110111001011........00011110	rr (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
-1101110111001011........00011...	rr (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7. The result is then loaded into .reg8[].
-1101110111001011........00100110	sla (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
-1101110111001011........00100...	sla (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0. The result is then loaded into .reg8[].
-1101110111001011........00101110	sra (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
-1101110111001011........00101...	sra (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged. The result is then loaded into .reg8[].
-1101110111001011........00110110	sll (ix+ofs8)		4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0.
-1101110111001011........00110...	sll (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0. The result is then loaded into .reg8[].
-1101110111001011........00111110	srl (ix+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
-1101110111001011........00111...	srl (ix+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7. The result is then loaded into .reg8[].
+1111110111001011........00000110	rlc (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
+1111110111001011........00000...	rlc (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0. The result is then loaded into .reg8[].
+1111110111001011........00001110	rrc (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
+1111110111001011........00001...	rrc (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7. The result is then loaded into .reg8[].
+1111110111001011........00010110	rl (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
+1111110111001011........00010...	rl (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0. The result is then loaded into .reg8[].
+1111110111001011........00011110	rr (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
+1111110111001011........00011...	rr (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7. The result is then loaded into .reg8[].
+1111110111001011........00100110	sla (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
+1111110111001011........00100...	sla (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0. The result is then loaded into .reg8[].
+1111110111001011........00101110	sra (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
+1111110111001011........00101...	sra (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged. The result is then loaded into .reg8[].
+1111110111001011........00110110	sll (iy+ofs8)		4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0.
+1111110111001011........00110...	sll (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0. The result is then loaded into .reg8[].
+1111110111001011........00111110	srl (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
+1111110111001011........00111...	srl (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7. The result is then loaded into .reg8[].
 
-1101110111001011........01...110	bit imm3,(ix+ofs8)	4		20		1		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
-1101110111001011........01......	bit imm3,(ix+ofs8)	4		20		0		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+1111110111001011........01...110	bit imm3,(iy+ofs8)	4		20		1		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+1111110111001011........01......	bit imm3,(iy+ofs8)	4		20		0		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
 
-1101110111001011........10...110	res imm3,(ix+ofs8)	4		23		1		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
-1101110111001011........10......	res imm3,(ix+ofs8),reg8	4		23		0		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
+1111110111001011........10...110	res imm3,(iy+ofs8)	4		23		1		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+1111110111001011........10......	res imm3,(iy+ofs8),reg8	4		23		0		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
 
-1101110111001011........11...110	set imm3,(ix+ofs8)	4		23		1		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
-1101110111001011........11......	set imm3,(ix+ofs8),reg8	4		23		0		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
+1111110111001011........11...110	set imm3,(iy+ofs8)	4		23		1		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
+1111110111001011........11......	set imm3,(iy+ofs8),reg8	4		23		0		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
 
 
 ;IY PRIMARY INSTRUCTIONS
@@ -302,32 +331,3 @@
 1111110111100011			ex (sp),iy		2		23		1		--------	Exchanges the word of memory pointed to by .reg16[3;1] with .regi[].
 
 1111110111100101			push iy			2		15		1		--------	.reg16[3;1] is decremented by two and .regi[] is stored into the word of memory pointed to by .reg16[3;1]. `*--*(int**)&.reg16[3;1] = .regi[]`
-
-
-;IY BIT INSTRUCTIONS
-
-1111110111001011........00000110	rlc (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0.
-1111110111001011........00000...	rlc (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and bit 0. The result is then loaded into .reg8[].
-1111110111001011........00001110	rrc (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7.
-1111110111001011........00001...	rrc (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and bit 7. The result is then loaded into .reg8[].
-1111110111001011........00010110	rl (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0.
-1111110111001011........00010...	rl (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated left one bit position. The contents of bit 7 are copied to .f[3] and the previous contents of .f[3] are copied to bit 0. The result is then loaded into .reg8[].
-1111110111001011........00011110	rr (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7.
-1111110111001011........00011...	rr (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is rotated right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of .f[3] are copied to bit 7. The result is then loaded into .reg8[].
-1111110111001011........00100110	sla (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0.
-1111110111001011........00100...	sla (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are copied to .f[3] and a zero is put into bit 0. The result is then loaded into .reg8[].
-1111110111001011........00101110	sra (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged.
-1111110111001011........00101...	sra (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and the previous contents of bit 7 are unchanged. The result is then loaded into .reg8[].
-1111110111001011........00110110	sll (iy+ofs8)		4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0.
-1111110111001011........00110...	sll (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted left one bit position. The contents of bit 7 are put into .f[3] and a one is put into bit 0. The result is then loaded into .reg8[].
-1111110111001011........00111110	srl (iy+ofs8)		4		23		1		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7.
-1111110111001011........00111...	srl (iy+ofs8),reg8	4		23		0		SZ*0*P0C	The byte of memory pointed to by .regi[] plus .ofs8[] is shifted right one bit position. The contents of bit 0 are copied to .f[3] and a zero is put into bit 7. The result is then loaded into .reg8[].
-
-1111110111001011........01...110	bit imm3,(iy+ofs8)	4		20		1		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
-1111110111001011........01......	bit imm3,(iy+ofs8)	4		20		0		?Z*1*?0-	Tests bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
-
-1111110111001011........10...110	res imm3,(iy+ofs8)	4		23		1		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
-1111110111001011........10......	res imm3,(iy+ofs8),reg8	4		23		0		--------	Resets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
-
-1111110111001011........11...110	set imm3,(iy+ofs8)	4		23		1		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[].
-1111110111001011........11......	set imm3,(iy+ofs8),reg8	4		23		0		--------	Sets bit .imm3[] of the byte of memory pointed to by .regi[] plus .ofs8[]. The result is then loaded into .reg8[].
