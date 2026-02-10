@@ -710,7 +710,8 @@
     }
     inc %i
   }
-  %target $omni.class(%class) Assembly $omni.divider $omni.z80.pastelink(%pastebin) $omni.divider $omni.z80.color.bold($calc($len($strip(%assembly)) / 2) bytes) $iif($len(%assembly) <= 50,$omni.divider $omni.z80.color.def $+ %assembly)
+  var %bytes $calc($len($strip(%assembly)) / 2)
+  %target $omni.class(%class) Assembly $omni.divider $omni.z80.pastelink(%pastebin) $omni.divider $omni.z80.color.bold(%bytes bytes) $iif(%bytes <= 50,$omni.divider $omni.z80.color.def $+ %assembly)
 }
 /omni.z80.d {
   tokenize 32 $remove($1,$chr(32)) $2-
