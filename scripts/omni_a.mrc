@@ -231,6 +231,9 @@
       .fclose cmds
       if %do == $null {
         tokenize 32 %nick %chan %omnomirc %target %errortarget %msg1
+        if $omni.help.check(%chan,%msg1) {
+          var %do omni.help $1-
+        }
         if $omni.basic.check(%chan,%msg1) {
           var %do omni.basic $1-
         }
@@ -280,6 +283,23 @@
     var %auto 1
   }
 }
+/omni.help.check {
+  return $iif($gettok($2,1,32) == help,1,0)
+}
+/omni.help {
+  var %nick $1
+  var %chan $2
+  var %omnomirc $3
+  var %target $4-5
+  var %errortarget $6-7
+  var %command $8
+  set -ln %query $strip($9-)
+  if $omni.z80.check(%chan,%query) {
+    omni.z80.help $1-7 $gettok(%query,1,32) help
+    halt
+  }
+  %target Commands $omni.divider ez80 $omni.divider z80
+}
 /omni.basic.check {
   return $regex($2,/^(ti|ti-)?basic\b/i)
 }
@@ -295,11 +315,18 @@
 /omni.z80.check {
   return $omni.z80.getmodel($gettok($2,1,32))
 }
-/omni.z80.syntax {
-
-}
 /omni.z80.help {
-
+  var %nick $1
+  var %chan $2
+  var %omnomirc $3
+  var %target $4-5
+  var %errortarget $6-7
+  var %command $8
+  var %model $omni.z80.getmodel(%command)
+  var %class $iif(%model == 8384pce,eZ80,Z80)
+  var %commandname $strip($gettok(%command,1,32))
+  var %next $omni.divider $omni.z80.color.bold(%commandname)
+  %target $omni.class(%class) Usage %next <instruction> [\ <instruction>]... %next <hex> %next port <hex> %next [calc|calculate|calculator] [b|bin|binary|o|oct|octal|d|dec|decimal|h|hex|hexadecimal|c|chr|char] <expr> %next help
 }
 /omni.z80 {
   var %nick $1
@@ -313,6 +340,10 @@
   set -ln %query $strip($9-)
   if %query == $null {
     %errortarget $omni.class(%class) ERROR $omni.divider No query entered.
+    halt
+  }
+  if $gettok(%query,1,32) == help {
+    omni.z80.help $1-
     halt
   }
   if $gettok(%query,1,32) == port {
