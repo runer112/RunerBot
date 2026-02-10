@@ -4,5 +4,5 @@
   ;     Operation to call with result
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  jacobly.paste %jacobly.paste.key $1-
+  $2- error
 }

@@ -231,6 +231,9 @@
       .fclose cmds
       if %do == $null {
         tokenize 32 %nick %chan %omnomirc %target %errortarget %msg1
+        if $omni.help.check(%chan,%msg1) {
+          var %do omni.help $1-
+        }
         if $omni.basic.check(%chan,%msg1) {
           var %do omni.basic $1-
         }
@@ -269,9 +272,33 @@
     if %auto || (%chan != %nick && $len($strip(%msg)) <= 2) {
       halt
     }
-    var %msg $omni.user.get(%file,Default) %msg
+    var %default $omni.user.get(%file,Default)
+    if %default == $null {
+      if runerbot !isin %chan {
+        halt
+      }
+      var %default @ez80
+    }
+    var %msg %default %msg
     var %auto 1
   }
+}
+/omni.help.check {
+  return $iif($gettok($2,1,32) == help,1,0)
+}
+/omni.help {
+  var %nick $1
+  var %chan $2
+  var %omnomirc $3
+  var %target $4-5
+  var %errortarget $6-7
+  var %command $8
+  set -ln %query $strip($9-)
+  if $omni.z80.check(%chan,%query) {
+    omni.z80.help $1-7 $gettok(%query,1,32) help
+    halt
+  }
+  %target Commands $omni.divider ez80 $omni.divider z80
 }
 /omni.basic.check {
   return $regex($2,/^(ti|ti-)?basic\b/i)
@@ -288,11 +315,18 @@
 /omni.z80.check {
   return $omni.z80.getmodel($gettok($2,1,32))
 }
-/omni.z80.syntax {
-
-}
 /omni.z80.help {
-
+  var %nick $1
+  var %chan $2
+  var %omnomirc $3
+  var %target $4-5
+  var %errortarget $6-7
+  var %command $8
+  var %model $omni.z80.getmodel(%command)
+  var %class $iif(%model == 8384pce,eZ80,Z80)
+  var %commandname $strip($gettok(%command,1,32))
+  var %next $omni.divider $omni.z80.color.bold(%commandname)
+  %target $omni.class(%class) Usage %next <instruction> [\ <instruction>]... %next <hex> %next port <hex> %next [calc|calculate|calculator] [b|bin|binary|o|oct|octal|d|dec|decimal|h|hex|hexadecimal|c|chr|char] <expr> %next help
 }
 /omni.z80 {
   var %nick $1
@@ -306,6 +340,10 @@
   set -ln %query $strip($9-)
   if %query == $null {
     %errortarget $omni.class(%class) ERROR $omni.divider No query entered.
+    halt
+  }
+  if $gettok(%query,1,32) == help {
+    omni.z80.help $1-
     halt
   }
   if $gettok(%query,1,32) == port {
@@ -342,7 +380,7 @@
   if $regex(%query,/^\s*dec\s+(b|c|d|e|h|l|\(hl\)|a|bc|de|hl|sp|i[xy]h|i[xy]l|i[xy]|\(i[xy].*\))( |$)/i) {
     goto assembly
   }
-  if $regex(%query,/^(what is|what's|calc|calculate|calculator|b|bin|binary|o|oct|octal|d|dec|decimal|h|hex|hexadecimal|chr|char)( |$)(.*)/i) {  
+  if $regex(%query,/^(what is|what's|calc|calculate|calculator|b|bin|binary|o|oct|octal|d|dec|decimal|h|hex|hexadecimal|c|chr|char)( |$)(.*)/i) {
     var %forcecalc 1
     goto calc
   }
@@ -377,7 +415,7 @@
     var %base 16
     var %forcecalc 1
   }
-  elseif $regex(%query,/^(chr|char)( |$)(.*)/i) {
+  elseif $regex(%query,/^(c|chr|char)( |$)(.*)/i) {
     set -ln %query $regml(3)
     var %base char
     var %forcecalc 1
@@ -664,6 +702,10 @@
   var %link $1
   return $iif(error* !iswm %link,%link,$omni.z80.color.error $+ Paste error)
 }
+/omni.z80.dividerpastelink {
+  var %link $1
+  return $iif(error* !iswm %link,$omni.divider %link)
+}
 /omni.z80.d.pastebin {
   shortenurl $12 omni.z80.d.shortenurl $1-11
 }
@@ -680,7 +722,7 @@
   var %dishex $10
   var %disassembly $11
   var %pastebin $12
-  %target $omni.class(%class) Disassembly $omni.divider $omni.z80.pastelink(%pastebin) $omni.divider $omni.z80.color.bold($calc($len(%dishex) / 2) bytes) $iif($lines($omni.file(disassembly.txt,%class)) <= 10,$omni.divider $replace(%disassembly,$chr(160),$chr(32)))
+  %target $omni.class(%class) Disassembly $omni.z80.dividerpastelink(%pastebin) $omni.divider $omni.z80.color.bold($calc($len(%dishex) / 2) bytes) $iif($lines($omni.file(disassembly.txt,%class)) <= 10,$omni.divider $replace(%disassembly,$chr(160),$chr(32)))
 }
 /omni.z80.a.pastebin {
   shortenurl $9 omni.z80.a.shortenurl $1-8
@@ -710,7 +752,8 @@
     }
     inc %i
   }
-  %target $omni.class(%class) Assembly $omni.divider $omni.z80.pastelink(%pastebin) $omni.divider $omni.z80.color.bold($calc($len($strip(%assembly)) / 2) bytes) $iif($len(%assembly) <= 50,$omni.divider $omni.z80.color.def $+ %assembly)
+  var %bytes $calc($len($strip(%assembly)) / 2)
+  %target $omni.class(%class) Assembly $omni.z80.dividerpastelink(%pastebin) $omni.divider $omni.z80.color.bold(%bytes bytes) $iif(%bytes <= 50,$omni.divider $omni.z80.color.def $+ %assembly)
 }
 /omni.z80.d {
   tokenize 32 $remove($1,$chr(32)) $2-
