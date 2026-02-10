@@ -349,7 +349,7 @@
   if $regex(%query,/^\s*dec\s+(b|c|d|e|h|l|\(hl\)|a|bc|de|hl|sp|i[xy]h|i[xy]l|i[xy]|\(i[xy].*\))( |$)/i) {
     goto assembly
   }
-  if $regex(%query,/^(what is|what's|calc|calculate|calculator|b|bin|binary|o|oct|octal|d|dec|decimal|h|hex|hexadecimal|chr|char)( |$)(.*)/i) {  
+  if $regex(%query,/^(what is|what's|calc|calculate|calculator|b|bin|binary|o|oct|octal|d|dec|decimal|h|hex|hexadecimal|c|chr|char)( |$)(.*)/i) {
     var %forcecalc 1
     goto calc
   }
@@ -384,7 +384,7 @@
     var %base 16
     var %forcecalc 1
   }
-  elseif $regex(%query,/^(chr|char)( |$)(.*)/i) {
+  elseif $regex(%query,/^(c|chr|char)( |$)(.*)/i) {
     set -ln %query $regml(3)
     var %base char
     var %forcecalc 1
