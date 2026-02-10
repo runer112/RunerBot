@@ -269,7 +269,14 @@
     if %auto || (%chan != %nick && $len($strip(%msg)) <= 2) {
       halt
     }
-    var %msg $omni.user.get(%file,Default) %msg
+    var %default $omni.user.get(%file,Default)
+    if %default == $null {
+      if runerbot !isin %chan {
+        halt
+      }
+      var %default @ez80
+    }
+    var %msg %default %msg
     var %auto 1
   }
 }
